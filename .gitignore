@@ -1,3 +1,7 @@
+/.vscode
+/imagens_base
+
+# Default Quasar Framework .gitignore
 .DS_Store
 .thumbs.db
 node_modules
