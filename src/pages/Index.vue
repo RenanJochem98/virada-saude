@@ -10,7 +10,7 @@
                 </q-card-section> -->
 
                 <q-card-section class="q-pb-xl">
-                     <q-form class="q-px-sm q-pt-xl">
+                     <q-form class="q-px-sm q-pt-md">
                             <q-input 
                             ref="email"
                             square 
@@ -71,7 +71,8 @@
     }
     .custom-login-card {
         width:400px;
-        height:440px;
+        // height:440px;
+        height:30em;
     }
 </style>
 <script>
