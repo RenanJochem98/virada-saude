@@ -11,14 +11,12 @@
 
                 <q-card-section class="q-pb-xl">
                      <q-form class="q-px-sm q-pt-md">
-                            <q-input 
+                        <q-input 
                             ref="email"
                             square 
                             clearable 
                             v-model="email" 
                             type="email"
-                            lazy-rules
-                            :rules="[this.required,this.isEmail,this.short]"
                             label="Email">
                             <template v-slot:prepend>
                                 <q-icon name="email" />
@@ -29,9 +27,7 @@
                             square 
                             clearable 
                             v-model="password"
-                            :type="passwordFieldType"  
-                            lazy-rules
-                            :rules="[this.required,this.short]"
+                            :type="passwordFieldType"
                             class="q-mb-md"
                             label="Senha">
                 
@@ -45,7 +41,7 @@
                                 class="cursor-pointer" />
                             </template>
                         </q-input>
-                        <q-btn label="Login" class="btn-login full-width q-mb-sm "/>
+                        <q-btn label="Login" class="btn-login full-width q-mb-sm " :to="{ name: 'Questionario' }" />
                         <q-btn label="Esqueci minha senha" class="full-width" color="red" />
                      </q-form>
                 </q-card-section>
