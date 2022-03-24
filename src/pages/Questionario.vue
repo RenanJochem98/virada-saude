@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="row flex flex-center">
-            <q-btn label="Continuar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Questionario' }" />
+            <q-btn label="Continuar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Home' }" />
         </div>
     </q-page>
 </template>
