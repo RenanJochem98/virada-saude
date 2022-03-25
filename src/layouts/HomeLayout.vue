@@ -14,7 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above>
+    <q-drawer v-model="leftDrawerOpen" show-if-above class="bg-grey-4">
       <q-scroll-area class="fit">
           <q-list>
 
