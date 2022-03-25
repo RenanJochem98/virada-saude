@@ -19,7 +19,7 @@
           <q-list>
 
             <template v-for="(menuItem, index) in menuList" :key="index">
-              <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
+              <q-item clickable :active="menuItem.label === 'Calendário'" v-ripple>
                 <q-item-section avatar>
                   <q-icon :name="menuItem.icon" />
                 </q-item-section>
@@ -51,39 +51,33 @@ import { defineComponent, ref } from "vue";
 
 const menuList = [
   {
-    icon: 'inbox',
-    label: 'Inbox',
+    icon: 'calendar_month',
+    label: 'Calendário',
     separator: true
   },
   {
-    icon: 'send',
-    label: 'Outbox',
+    icon: 'fitness_center',
+    label: 'Próximo Treino',
     separator: false
   },
   {
-    icon: 'delete',
-    label: 'Trash',
+    icon: 'quiz',
+    label: 'Sua avaliação sobre o último treino',
     separator: false
   },
   {
-    icon: 'error',
-    label: 'Spam',
+    icon: 'analytics',
+    label: 'Desempenho',
     separator: true
+  },
+  {
+    icon: 'account_circle',
+    label: 'Dados Pessoais',
+    separator: false
   },
   {
     icon: 'settings',
-    label: 'Settings',
-    separator: false
-  },
-  {
-    icon: 'feedback',
-    label: 'Send Feedback',
-    separator: false
-  },
-  {
-    icon: 'help',
-    iconColor: 'primary',
-    label: 'Help',
+    label: 'Alterar Dias de Treino',
     separator: false
   }
 ]
