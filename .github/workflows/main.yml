@@ -1,0 +1,130 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Docker to Heroku
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master, homologacao ]
+  pull_request:
+    branches: [ master, homologacao ]
+
+# env:
+#   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+#   APP_NAME: ${{ 'virada-saude' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "virada-saude" #Must be unique in Heroku
+          heroku_email: "renanjochem98@gmail.com"
+          usedocker: true
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v1
+#     - name: Login to Heroku Container registry
+#       env: 
+#         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_OAUTH }}
+#       run: heroku container:login
+#     - name: Build and push
+#       env:
+#         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_OAUTH }}
+#       run: heroku container:push -a appname web 
+#     - name: Release
+#       env:
+#         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_OAUTH }}
+#       run: heroku container:release -a appname web 
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       # Check-out your repository.
+#       - name: Checkout
+#         uses: actions/checkout@v2
+        
+#         ###  IMPORTANT PART  ###
+
+#       - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+#         uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+#         with:
+#           # Below you must provide variables for your Heroku app.
+
+#           # The email address associated with your Heroku account.
+#           # If you don't want to use repository secrets (which is recommended) you can do:
+#           # email: my.email@example.com
+#           email: ${{ secrets.HEROKU_EMAIL }}
+          
+#           # Heroku API key associated with provided user's email.
+#           # Api Key is available under your Heroku account settings.
+#           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          
+#           # Name of the heroku application to which the build is to be sent.
+#           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+#           # (Optional, default: "./")
+#           # Dockerfile directory.
+#           # For example, if you have a Dockerfile in the root of your project, leave it as follows:
+#           dockerfile_directory: ../../
+
+#           # (Optional, default: "Dockerfile")
+#           # Dockerfile name.
+#           dockerfile_name: Dockerfile
+
+#           # (Optional, default: "")
+#           # Additional options of docker build command.
+#           docker_options: "--no-cache"
+
+#           # (Optional, default: "web")
+#           # Select the process type for which you want the docker container to be uploaded.
+#           # By default, this argument is set to "web".
+#           # For more information look at https://devcenter.heroku.com/articles/process-model
+#           process_type: web
+          
+   
+          
+### ⬆ IMPORTANT PART ⬆ ###
+
+# jobs:
+      
+#   deploy:
+#     name: Deploy to Heroku
+#     runs-on: ubuntu-18.04
+#     steps:
+
+#     # Clone the repository
+#     - name: Checkout
+#       uses: actions/checkout@v2
+
+#     # Build Docker image
+#     - name: Docker build
+#       run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+
+#     # Push the Docker image to Heroku Container Registry
+#     - name: Publish
+#       run: |
+#         heroku container:push web -a $APP_NAME
+#         heroku container:release web -a $APP_NAME
+
+# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   # This workflow contains a single job called "build"
+#   build:
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
+#     steps:
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v2
+
+#       # Runs a single command using the runners shell
+#       - name: Build
+#         run: docker build .  --no-cache
