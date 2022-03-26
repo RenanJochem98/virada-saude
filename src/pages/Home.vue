@@ -4,7 +4,7 @@
             Sua agenda
         </div>
         <!-- <div style="max-width: 800px; width: 100%;"> -->
-        <div class="q-mx-xl q-px-xl q-mt-md">            
+        <div class="q-mx-xl q-mt-md shadow-5">            
             <q-calendar-month
             v-model="selectedDate"
             :day-height="60"
