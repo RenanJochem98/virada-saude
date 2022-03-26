@@ -19,7 +19,7 @@
           <q-list>
 
             <template v-for="(menuItem, index) in menuList" :key="index">
-              <q-item clickable :active="menuItem.label === 'Calendário'" v-ripple>
+              <q-item clickable v-ripple :active="menuItem.active" :disable="menuItem.nameLink == ''" @click="showNotImplemented(menuItem.nameLink, menuItem.label)">
                 <q-item-section avatar>
                   <q-icon :name="menuItem.icon" />
                 </q-item-section>
@@ -48,37 +48,50 @@
 <script>
 
 import { defineComponent, ref } from "vue";
+import { Notify } from 'quasar'
 
 const menuList = [
   {
     icon: 'calendar_month',
     label: 'Calendário',
-    separator: true
+    separator: false,
+    nameLink: "Home",
+    active: true
   },
   {
     icon: 'fitness_center',
     label: 'Próximo Treino',
-    separator: false
+    separator: true,
+    nameLink: '',
+    active: false
   },
   {
     icon: 'quiz',
     label: 'Sua avaliação sobre o último treino',
-    separator: false
+    separator: false,
+    nameLink: '',
+    active: false
   },
   {
     icon: 'analytics',
     label: 'Desempenho',
-    separator: true
+    separator: true,
+    nameLink: '',
+    active: false
   },
   {
     icon: 'account_circle',
     label: 'Dados Pessoais',
-    separator: false
+    separator: false,
+    nameLink: '',
+    active: false
   },
   {
     icon: 'settings',
     label: 'Alterar Dias de Treino',
-    separator: false
+    separator: false,
+    nameLink: '',
+    active: false
   }
 ]
 
@@ -94,6 +107,16 @@ export default defineComponent({
   methods: {
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
+    },
+    showNotImplemented (nameLink, label) {
+      if (nameLink == '') {
+         Notify.create({
+          type: 'negative',
+          message: 'A ação para "'+label+'" ainda não foi implementada.'
+        })
+      }else{
+        this.$router.push( {name: nameLink})
+      }
     }
   }
 });
