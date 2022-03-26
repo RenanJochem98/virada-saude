@@ -19,7 +19,11 @@
           <q-list>
 
             <template v-for="(menuItem, index) in menuList" :key="index">
-              <q-item clickable v-ripple :active="menuItem.active" :disable="menuItem.nameLink == ''" @click="showNotImplemented(menuItem.nameLink, menuItem.label)">
+              <q-item clickable v-ripple 
+                :active="this.$route.name == menuItem.nameLink" 
+                :disable="menuItem.nameLink == ''" 
+                @click="showNotImplemented(menuItem.nameLink, menuItem.label)"
+              >
                 <q-item-section avatar>
                   <q-icon :name="menuItem.icon" />
                 </q-item-section>
@@ -62,7 +66,7 @@ const menuList = [
     icon: 'fitness_center',
     label: 'Próximo Treino',
     separator: true,
-    nameLink: '',
+    nameLink: 'ProximoTreino',
     active: false
   },
   {
