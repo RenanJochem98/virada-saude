@@ -14,6 +14,11 @@ const routes = [
     component: () => import("layouts/HomeLayout.vue"),
     children: [{ path: "", name: "Home", component: () => import("pages/Home.vue") }],
   },
+  {
+    path: "/ProximoTreino",
+    component: () => import("layouts/HomeLayout.vue"),
+    children: [{ path: "", name: "ProximoTreino", component: () => import("pages/ProximoTreino.vue") }],
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
