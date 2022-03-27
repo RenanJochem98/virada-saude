@@ -11,17 +11,7 @@
 
                 <q-card-section class="q-pb-xl">
                      <q-form class="q-px-sm q-pt-md">
-                        <q-input 
-                            ref="email"
-                            square 
-                            clearable 
-                            v-model="email" 
-                            type="email"
-                            label="Email">
-                            <template v-slot:prepend>
-                                <q-icon name="email" />
-                            </template>
-                        </q-input>
+                        <input-email @changeEmail="email = $event"/>
                         <q-input  
                             ref="password"
                             square 
@@ -73,9 +63,10 @@
 </style>
 <script>
 import { defineComponent } from "vue";
-
+import InputEmail from 'components/Inputs/InputEmail.vue'
 export default defineComponent({
   name: "Index",
+  components: {InputEmail},
   data : function() {
     return {
         email: '',
