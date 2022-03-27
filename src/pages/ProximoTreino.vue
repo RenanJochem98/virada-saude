@@ -20,7 +20,7 @@
                 <q-separator :key="'sep' + atividade.id" />
             </div>
             <div class="row flex flex-center q-py-lg">
-                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Home' }" />
+                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Treino' }" />
             </div>
         </div>
     </q-page>
