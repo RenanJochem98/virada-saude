@@ -15,8 +15,9 @@
         
         <div class="row flex flex-center q-py-lg">
             <div class="col-2">
-                <q-btn label="Iniciar" class="btn-continuar q-mb-sm q-mx-sm" @click="timer" />
-                <q-btn label="Pause" class="btn-continuar q-mb-sm" @click="pause" />
+                <q-btn round icon="stop" class="btn-continuar q-mb-sm q-mx-sm" @click="stop" />
+                <q-btn :disable="playDisabled" round icon="play_arrow" class="btn-continuar q-mb-sm q-mx-sm" @click="timer" />
+                <q-btn round icon="pause" class="btn-continuar q-mb-sm q-mx-sm" @click="pause" />
             </div>
         </div>
          <div class="row flex flex-center q-py-lg">
@@ -43,19 +44,28 @@ export default defineComponent({
         minute: 0,
         second: 0,
         millisecond: 0,
-        cron: 0
+        cron: null,
+        playDisabled: false
       }
   },
   methods: {
       pause() {
-          clearInterval(this.cron)
+        this.playDisabled = false
+        clearInterval(this.cron)
+      },
+      stop() {
+        this.pause()
+        this.cron = null
+        this.hour = 0
+        this.minute = 0
+        this.second = 0
       },
       timer() {
+        this.playDisabled = true
         const audio = document.getElementById("chatAudio")
         this.cron = setInterval(() => {
             this.second += 1
             if(this.second % 10 == 0) {
-                
                 audio.play()
             }
             if(this.second >= 60) {
