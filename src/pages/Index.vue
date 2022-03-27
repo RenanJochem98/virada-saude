@@ -12,25 +12,7 @@
                 <q-card-section class="q-pb-xl">
                      <q-form class="q-px-sm q-pt-md">
                         <input-email @changeEmail="email = $event"/>
-                        <q-input  
-                            ref="password"
-                            square 
-                            clearable 
-                            v-model="password"
-                            :type="passwordFieldType"
-                            class="q-mb-md"
-                            label="Senha">
-                
-                            <template v-slot:prepend>
-                                <q-icon name="lock" />
-                            </template>
-                            <template v-slot:append>
-                                <q-icon 
-                                :name="visibilityIcon"
-                                @click="switchVisibility"
-                                class="cursor-pointer" />
-                            </template>
-                        </q-input>
+                        <input-password @changePassword="password = $event" />
                         <q-btn label="Login" class="btn-login full-width q-mb-sm " :to="{ name: 'Questionario' }" />
                         <q-btn label="Esqueci minha senha" class="full-width" color="red" />
                      </q-form>
@@ -64,27 +46,19 @@
 <script>
 import { defineComponent } from "vue";
 import InputEmail from 'components/Inputs/InputEmail.vue'
+import InputPassword from 'components/Inputs/InputPassword.vue'
 export default defineComponent({
   name: "Index",
-  components: {InputEmail},
+  components: {InputEmail, InputPassword},
   data : function() {
     return {
         email: '',
         username: '',
-        password: '',
-        repassword: '',
-        register: false,
-        passwordFieldType: 'password',
-        visibility: false,
-        visibilityIcon: 'visibility'
+        password: ''
     };
   },
   methods: {
-    switchVisibility() {
-      this.visibility = !this.visibility
-      this.passwordFieldType = this.visibility ? 'text' : 'password'
-      this.visibilityIcon =  this.visibility ? 'visibility_off' : 'visibility'
-    }
+    
   }
 
 });

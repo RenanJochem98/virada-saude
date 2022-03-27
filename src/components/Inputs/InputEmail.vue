@@ -7,7 +7,8 @@
         type="email"
         label="Email"
         lazy-rules
-        :rules="[this.required,this.isEmail,this.short]">
+        :rules="[this.required,this.isEmail,this.short]"
+        @update:model-value="updateEmail">
         <template v-slot:prepend>
             <q-icon name="email" />
         </template>
