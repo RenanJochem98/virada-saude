@@ -7,6 +7,8 @@
         :type="passwordFieldType"
         class="q-mb-md"
         label="Senha"
+        lazy-rules
+        :rules="[val => val.length > 0 || 'O campo senha não pode estar vazio']"
         @update:model-value="updatePassword" >
 
         <template v-slot:prepend>
@@ -37,6 +39,10 @@ export default defineComponent({
   methods: {
     updatePassword () {
       this.$emit('changePassword', this.password)
+    },
+    hasError() {
+      this.$refs.password.validate()
+      return this.$refs.password.hasError
     },
     switchVisibility() {
       this.visibility = !this.visibility

@@ -11,9 +11,9 @@
 
                 <q-card-section class="q-pb-xl">
                      <q-form class="q-px-sm q-pt-md">
-                        <input-email @changeEmail="email = $event"/>
-                        <input-password @changePassword="password = $event" />
-                        <q-btn label="Login" class="btn-login full-width q-mb-sm " :to="{ name: 'Questionario' }" />
+                        <input-email @changeEmail="email = $event" ref="email"/>
+                        <input-password @changePassword="password = $event" ref="password"/>
+                        <q-btn label="Login" class="btn-login full-width q-mb-sm " @click="login" />
                         <q-btn label="Esqueci minha senha" class="full-width" color="red" />
                      </q-form>
                 </q-card-section>
@@ -58,7 +58,13 @@ export default defineComponent({
     };
   },
   methods: {
-    
+    login(){
+        const hasEmailError = this.$refs.email.hasError()
+        const hasPasswordError = this.$refs.password.hasError()
+        if(!hasEmailError && !hasPasswordError){
+            this.$router.push({ name: 'Questionario' })
+        }
+    }
   }
 
 });
