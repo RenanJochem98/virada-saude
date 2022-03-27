@@ -20,8 +20,30 @@
                 <q-btn round icon="pause" class="btn-continuar q-mb-sm q-mx-sm" @click="pause" />
             </div>
         </div>
-         <div class="row flex flex-center q-py-lg">
-            
+        <div class="q-px-lg ">
+            <!-- <div class="text-center text-h6 text-weight-medium q-mt-xl text-uppercase">Atividades</div> -->
+            <div class="row flex q-py-md text-uppercase text-weight-bold bg-grey-6">
+                <div class="col-1 flex-start text-center">Ordem</div>
+                <div class="col-4 flex-center text-center">Nome</div>
+                <div class="col-3 flex-center text-center">Tempo (em minutos)</div>
+                <div class="col-4 flex-center text-center">Intensidade</div>
+            </div>
+            <div v-for="(atividade, index) in treino.atividades" :key="atividade.id">
+                <div class="row flex q-py-lg" :class="index%2 == 0 ? '' : 'bg-grey-3'">
+                    <div class="col-1 flex-start text-center">{{ atividade.id }}</div>
+                    <div class="col-4 flex-center text-center">{{ atividade.nome}}</div>
+                    <div class="col-3 flex-center text-center">
+                        <span>
+                            <span v-if="atividade.tempoEmMinutos < 10">0</span>{{atividade.tempoEmMinutos}}:
+                        </span>
+                        <span>
+                            <span v-if="atividadeAtualSecond < 10">0</span>{{atividadeAtualSecond}}
+                        </span>
+                    </div>
+                    <div class="col-4 flex-center text-center text-uppercase">{{atividade.intensidade}}</div>
+                </div>
+                <q-separator :key="'sep' + atividade.id" />
+            </div>
         </div>
     </q-page>
 </template>
@@ -35,15 +57,35 @@
 <script>
 import { defineComponent } from "vue";
 
-
+const treino = {
+    dataReferencia: '2022-03-28',
+    tempoTotalEmMinutos: 60,
+    atividades: [
+        {
+            id: 1,
+            nome: 'Caminhada',
+            descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
+            tempoEmMinutos: 10,
+            intensidade: 'leve'
+        },
+        {
+            id: 2,
+            nome: 'Corrida',
+            descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
+            tempoEmMinutos: 10,
+            intensidade: 'pesado'
+        }
+    ]
+}
 export default defineComponent({
   name: "Treino",
   data: () => {
       return {
+        treino,
         hour: 0,
         minute: 0,
         second: 0,
-        millisecond: 0,
+        atividadeAtualSecond: 0,
         cron: null,
         playDisabled: false
       }
@@ -79,6 +121,9 @@ export default defineComponent({
             
             
         }, 1000)
+      },
+      playCurrentActivity () {
+          
       }
   }
 });
