@@ -73,7 +73,7 @@ const menuList = [
     icon: 'quiz',
     label: 'Sua avaliação sobre o último treino',
     separator: false,
-    nameLink: '',
+    nameLink: 'Feedback',
     active: false
   },
   {
