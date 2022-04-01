@@ -1,11 +1,17 @@
 <template>
     <q-page padding>
-        <div v-for="pergunta in perguntas" :key="pergunta.id" :id="pergunta.id" :class='pergunta.dependeDaResposta !== null? "hide": ""' >
-            <div>{{pergunta.texto}}</div>
-            <div>
-                <q-radio v-for="opcao in pergunta.opcoes" :key="opcao.id" :val="opcao.id" v-model="respostas[pergunta.id]" :label="opcao.texto"  class="flex justify-center items-center"
-                    @update:model-value="clickOption(pergunta.id, $event)"/>
+        <div class="text-center text-h4 text-weight-bolder q-mt-lg">Feedback</div>
+            <div class="flex flex-center text-center q-my-xl row">
+                <div v-for="pergunta in perguntas" :key="pergunta.id" :id="pergunta.id" :class='pergunta.dependeDaResposta !== null? "hide": ""' class="col-12 q-mt-md" >
+                <div class=" text-weight-bolder">{{pergunta.texto}}</div>
+                <div>
+                    <q-radio v-for="opcao in pergunta.opcoes" :key="opcao.id" :val="opcao.id" v-model="respostas[pergunta.id]" :label="opcao.texto"  class=""
+                        @update:model-value="clickOption(pergunta.id, $event)"/>
+                </div>
             </div>
+        </div>
+        <div class="row flex flex-center">
+            <q-btn label="Enviar" class="btn-continuar q-mb-sm col-5" @click="sendAnswers"  />
         </div>
             
     </q-page>
@@ -110,24 +116,23 @@ export default defineComponent({
           if (!this.perguntasDependentes[idPergunta][idResposta]) {
               this.perguntasDependentes[idPergunta][idResposta] = this.perguntas.filter(p => p.dependeDaResposta === idResposta)
           }
-           
-          this.perguntasDependentes[idPergunta][idResposta].forEach(p => {
-              document.getElementById(p.id).classList.remove('hide')
+
+          //mostra as questões dependentes da pergunta atual
+          this.perguntasDependentes[idPergunta][idResposta].forEach(perguntaDependente => {
+              document.getElementById(perguntaDependente.id).classList.remove('hide')
           })
 
-          Object.keys(this.perguntasDependentes[idPergunta]).forEach(idR => {
-             console.log("idPergunta", idPergunta)
-             console.log("idResposta", idResposta)
-             console.log("idR", idR)
-             if (idR != idResposta) {
-                this.perguntasDependentes[idPergunta][idR].forEach(k => {
-                    console.log("Removeu: ", k.id)
-                    document.getElementById(k.id).classList.add('hide')
+          // esconde perguntas dependentes das outras respostas da pergunta atual 
+          Object.keys(this.perguntasDependentes[idPergunta]).forEach(idRespostaAtual => {
+             if (idRespostaAtual != idResposta) {
+                this.perguntasDependentes[idPergunta][idRespostaAtual].forEach(perguntaDependente => {
+                    document.getElementById(perguntaDependente.id).classList.add('hide')
                 })
-            }
-          })
-          console.log('')
-          
+            } 
+          })   
+      },
+      sendAnswers () {
+
       }
   }
 });
