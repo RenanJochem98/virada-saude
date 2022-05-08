@@ -1,0 +1,37 @@
+version: "3"
+services:
+  api:
+    build: ./api
+    container_name: "virada_saude_api"
+    volumes:
+      - ./api:/usr/src/app
+      - ./api/mysqld:/var/run/mysqld
+    ports:
+      - 8000:8000
+    environment:
+      ENV: "development"
+      PORT: 8000
+      # a: "postgres://postgres:postgres@db:5432/app"
+      DATABASE_URL: "mysql://root:mysql_pass@db:5500/saude_database"
+      SECRET_KEY: "x%oithm2a!efp)xp=n=za4z7e6kstxo@g(=9(*qun6r9a3j1&n"
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*,"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: "virada_saude_db"
+    command: "--default-authentication-plugin=mysql_native_password" #chmod -R 777 mysqld && 
+    restart: always
+    ports:
+      - 5500:3306 # alterando porta para facilitar conexao
+    volumes:
+      - ./docker/db/mysqldata:/var/lib/mysql
+      - ./api/mysqld:/var/run/mysqld
+    environment:
+      MYSQL_DATABASE: saude_database
+      MYSQL_USER: root,
+      MYSQL_PASSWORD: root,
+      MYSQL_ROOT_PASSWORD: mysql_root_pass
+

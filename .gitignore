@@ -1,0 +1,4 @@
+docker/db/mysqldata/*
+api/mysqld/*
+api/core/core/__pycache__
+api/core/staticfiles
