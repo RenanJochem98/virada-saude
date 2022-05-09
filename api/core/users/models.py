@@ -1,7 +1,7 @@
 # from datetime import datetime
 # import constants
 
-# from hashids import Hashids
+from hashids import Hashids
 
 from django.utils import timezone
 from django.contrib import admin
@@ -9,34 +9,38 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 # from django.core.exceptions import PermissionDenied
 from django.db import models
-
 # from exams.models import Exam
 
 
-# hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
+hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
 
 
-# class RegistrationForm(models.Model):
-#     name = models.CharField(max_length=255)
+class RegistrationForm(models.Model):
+    name = models.CharField(max_length=255)
 
-#     def __str__(self) -> str:
-#         return self.name
+    def __str__(self) -> str:
+        return self.name
 
-#     def encode(self) -> str:
-#         return hashids.encode(self.id)
+    def encode(self) -> str:
+        return hashids.encode(self.id)
 
-#     @classmethod
-#     def decode(cls, string: str) -> "RegistrationForm":
-#         return cls.objects.filter(id=hashids.decode(string)[0]).first()
+    @classmethod
+    def decode(cls, string: str) -> "RegistrationForm":
+        return cls.objects.filter(id=hashids.decode(string)[0]).first()
 
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
+    def get_queryset(self):
+        return super().get_queryset()
+
     def create(self, **kwargs):
         return super().create(**kwargs)
 
     def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('Users must have an email address')
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -50,8 +54,8 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
-# class User(models.Model):
+class User(AbstractBaseUser, PermissionsMixin):
+#class User(models.Model):
     email = models.EmailField("Email", blank=True, null=False)
     username = models.CharField("username", max_length=150, blank=False, null=False)
     first_name = models.CharField("first_name", max_length=150, blank=True, null=True)
@@ -68,7 +72,13 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
-
+    empresa = models.ForeignKey(
+        "empresa.Empresa",
+        related_name="idempresas",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True
+    )
     class Meta:
         constraints = [
             models.UniqueConstraint(

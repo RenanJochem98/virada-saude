@@ -12,8 +12,9 @@ class UserSerializer(serializers.ModelSerializer):
     Serializer representando os dados de um usuário
     """
 
-    # token = serializers.CharField(source="auth_token.key", read_only=True)
+    token = serializers.CharField(source="auth_token.key", read_only=True)
 
     class Meta:
         model = User
-        fields = ["id", "email", "username"]
+        fields = ["id", "email", "username", "token"]
+        read_only_fields = ["token"]
