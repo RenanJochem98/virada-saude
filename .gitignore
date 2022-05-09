@@ -1,12 +1,15 @@
 docker/db/mysqldata/*
 api/mysqld/*
-api/core/core/__pycache__
+# api/core/core/__pycache__
 api/core/staticfiles
 
-api/core/users/__pycache__
-api/core/users/migrations/__pycache__
-api/core/users/api/__pycache__
+api/core/*/__pycache__
+api/core/*/*/__pycache__
+api/core/*/*/*/__pycache__
+# api/core/users/__pycache__
+# api/core/users/migrations/__pycache__
+# api/core/users/api/__pycache__
 
-api/core/empresa/__pycache__
-api/core/empresa/api/__pycache__
-api/core/empresa/migrations/__pycache__
+# api/core/empresa/__pycache__
+# api/core/empresa/api/__pycache__
+# api/core/empresa/migrations/__pycache__
