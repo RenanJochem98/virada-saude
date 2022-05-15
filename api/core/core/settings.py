@@ -47,7 +47,8 @@ THIRD_PARTY_APPS = [
 
 PROJECT_APPS = [
     'users',
-    'empresa'
+    'empresa',
+    'anamnese'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + PROJECT_APPS
