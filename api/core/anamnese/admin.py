@@ -11,6 +11,8 @@ class PerguntasAnamneseAdmin(admin.ModelAdmin):
         
         return len(campos_anamnese) == len(perguntas)
     
+    list_display=('texto', 'tipo', 'campo_anamnese_correspondente', 'depende_de')
+
     if not verificarSeTodosCamposAnamneseTemPerguntasCorrespondentes():
         fieldsets = [
             (None, {'fields': ['texto']}),
