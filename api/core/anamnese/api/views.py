@@ -10,10 +10,15 @@
 from rest_framework import  viewsets #mixins,
 
 from anamnese.api.serializers import (
-    AnamneseSerializer
+    AnamneseSerializer,
+    PeguntasAnamneseSerializer
 )
-from anamnese.models import Anamnese
+from anamnese.models import Anamnese, PerguntasAnamnese
 
 class AnamneseViewSet(viewsets.ModelViewSet):
     queryset = Anamnese.objects.all()
     serializer_class = AnamneseSerializer
+
+class PerguntasAnamneseViewSet(viewsets.ModelViewSet):
+    queryset = PerguntasAnamnese.objects.all()
+    serializer_class = PeguntasAnamneseSerializer
