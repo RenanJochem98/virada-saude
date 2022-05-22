@@ -32,11 +32,11 @@ class RegistrationForm(models.Model):
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def get_queryset(self):
-        return super().get_queryset()
+    # def get_queryset(self):
+    #     return super().get_queryset()
 
-    def create(self, **kwargs):
-        return super().create(**kwargs)
+    # def create(self, **kwargs):
+    #     return super().create(**kwargs)
 
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -56,10 +56,11 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 #class User(models.Model):
-    email = models.EmailField("Email", blank=True, null=False)
-    username = models.CharField("username", max_length=150, blank=False, null=False)
-    first_name = models.CharField("first_name", max_length=150, blank=True, null=True)
-    last_name = models.CharField("last_name", max_length=150, blank=True, null=True)
+    email = models.EmailField("email", blank=True, null=False)
+    #username = models.CharField("username", max_length=150, blank=False, null=False)
+    first_name = models.CharField("Primeiro nome", max_length=150, blank=True, null=True)
+    last_name = models.CharField("Sobrenome", max_length=150, blank=True, null=True)
+    
     is_active = models.BooleanField("is_active", default=True)
     is_staff = models.BooleanField("is_staff", default=False)
     is_superuser = models.BooleanField("is_superuser", default=False)
@@ -67,18 +68,23 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField("date_joined", default=timezone.now)
     created = models.DateTimeField("created", default=timezone.now)
     modified = models.DateTimeField("modified", auto_now=True)
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
+   
     empresa = models.ForeignKey(
         "empresa.Empresa",
+        verbose_name="Empresa",
         related_name="idempresas",
         on_delete=models.RESTRICT,
         blank=True,
         null=True
     )
+    
+    objects = UserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name"]
+
+    
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(
