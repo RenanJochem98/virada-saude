@@ -18,6 +18,7 @@ User = get_user_model()
 
 # class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

@@ -40,9 +40,10 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'django_extensions',
     'rest_framework',
-    'corsheaders' 
+    'django_extensions',
+    'corsheaders',
+    'rest_framework_simplejwt'
 ]
 
 PROJECT_APPS = [
@@ -52,6 +53,12 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
