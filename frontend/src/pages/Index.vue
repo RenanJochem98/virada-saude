@@ -22,7 +22,7 @@
 
                 <q-card-section>
                     <div class="q-px-sm">
-                        <q-btn label="Novo cadastro" class="q-px-sm full-width" color="positive" />
+                        <q-btn label="Novo cadastro" class="q-px-sm full-width" color="positive" :to="{ name: 'Cadastro' }" />
                     </div>
                 </q-card-section>
             </q-card>
