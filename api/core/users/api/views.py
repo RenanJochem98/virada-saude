@@ -22,7 +22,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # permission_classes = []
     '''
     def get_serializer_class(self):
         """
