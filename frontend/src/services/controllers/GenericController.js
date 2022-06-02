@@ -1,9 +1,9 @@
-import { api } from '../boot/axios'
+import { api } from '../../boot/axios'
 
-class GenericService {
+class GenericController {
 
     constructor() {
-        throw new Error('Generic service não pode ser instanciada.')
+        throw new Error('Generic Controller não pode ser instanciada.')
     }
 
     static async Get(baseUrl, needHeaders) {
@@ -15,4 +15,4 @@ class GenericService {
     }
 }
 
-export {GenericService}
+export {GenericController}

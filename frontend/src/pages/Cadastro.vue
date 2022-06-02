@@ -32,14 +32,14 @@
 
 <script>
 import { defineComponent } from "vue";
-import { EmpresaService } from '../services/EmpresaService'
+import { EmpresaController } from '../services/controllers/EmpresaController'
 import InputEmail from 'components/Inputs/InputEmail.vue'
 import InputPassword from 'components/Inputs/InputPassword.vue'
 export default defineComponent({
   name: "Cadastro",
   components: {InputEmail, InputPassword},
   async beforeMount () {
-      this.empresas = await EmpresaService.BuscarEmpresas()
+      this.empresas = await this.BuscarEmpresas()
   },
   data : function() {
     return {
@@ -53,11 +53,12 @@ export default defineComponent({
     };
   },
   methods: {
-    // async BuscarEmpresas () {
-    //     const result = 
-    //      = result
-    //     console.log(result)
-    // }
+    async BuscarEmpresas () {
+        const result = await EmpresaController.BuscarEmpresas()
+        //  = result
+        console.log(result)
+        return result
+    }
   }
 
 });
