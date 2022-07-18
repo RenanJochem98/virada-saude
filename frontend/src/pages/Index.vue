@@ -11,9 +11,9 @@
 
                 <q-card-section class="q-pb-xl">
                      <q-form class="q-px-sm q-pt-md">
-                        <input-email @changeEmail="email = $event" ref="email"/>
-                        <input-password @changePassword="password = $event" ref="password"/>
-                        <q-btn label="Login" class="btn-login full-width q-mb-sm " @click="login" />
+                        <input-email v-model="email" @changeEmail="email = $event" ref="email"/>
+                        <input-password v-model="password" @changePassword="password = $event" ref="password"/>
+                        <q-btn label="Login" class="btn-login full-width q-mb-sm " @click="Login" />
                         <q-btn label="Esqueci minha senha" class="full-width" color="red" />
                      </q-form>
                 </q-card-section>
@@ -45,8 +45,10 @@
 </style>
 <script>
 import { defineComponent } from "vue";
+//import { Store } from 'src/store'
 import InputEmail from 'components/Inputs/InputEmail.vue'
 import InputPassword from 'components/Inputs/InputPassword.vue'
+import { UserController } from '../services/controllers/UserController'
 export default defineComponent({
   name: "Index",
   components: {InputEmail, InputPassword},
@@ -58,11 +60,27 @@ export default defineComponent({
     };
   },
   methods: {
-    login(){
+    async Login(){
         const hasEmailError = this.$refs.email.hasError()
         const hasPasswordError = this.$refs.password.hasError()
         if(!hasEmailError && !hasPasswordError){
-            this.$router.push({ name: 'Questionario' })
+            const result = await UserController.Login(this.email, this.password)
+            if(!result.status) {
+                await this.$store.dispatch('login/ActionSetAccessToken', result.accessToken)
+                await this.$store.dispatch('login/ActionSetRefreshToken', result.refreshToken)
+                
+                this.$q.notify({
+                    type: 'positive',
+                    message: "Login realizado com sucesso!"
+                })
+
+                this.$router.push({ name: 'Questionario' })
+            } else {
+                this.$q.notify({
+                    type: 'negative',
+                    message: result.mensagem
+                })
+            }
         }
     }
   }

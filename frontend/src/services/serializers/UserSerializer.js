@@ -11,6 +11,20 @@ class UserSerializer extends GenericSerializer {
             empresa: params.idEmpresa
         }
     }
+
+    static SerializeLogin(pEmail, senha) {
+        return {
+            email: pEmail,
+            password: senha
+        }
+    }
+
+    static DeserializeLogin(loginResult) {
+        return {
+            accessToken: loginResult.access,
+            refreshToken: loginResult.refresh
+        }
+    }
 }
 
 export { UserSerializer }
