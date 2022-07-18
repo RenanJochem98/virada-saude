@@ -10,7 +10,7 @@
             <input-password ref="password" v-model="password" @changePassword="password = $event" lazy-rules :rules="[this.ValidarCampoNaoVazio]" />
             <q-select ref="empresa" v-model="empresa" :options="empresas" label="Empresa" lazy-rules :rules="[this.ValidarCampoEmpresaNaoVazio]" />
             <q-btn label="Cadastrar" class="btn-login full-width q-mb-sm " @click="CriarUsuario" />
-            <q-btn label="Esqueci minha senha" class="full-width" color="red" />
+            <q-btn color="red" class="full-width" label="Esqueci minha senha"  />
         </q-form>
     </q-page>
 </template>
@@ -74,7 +74,7 @@ export default defineComponent({
             || erroSenha
     },
     async CriarUsuario () {
-        //console.log("Empresa", "")
+        
         if(this.ExisteErroNoFormulario()){
             this.$q.notify({
                 type: 'negative',
@@ -93,7 +93,6 @@ export default defineComponent({
                 message: 'O cadastro foi realizado com sucesso!'
             })
             this.$router.push({name: "Index"})
-            //console.log(result)
         }
        
     },
