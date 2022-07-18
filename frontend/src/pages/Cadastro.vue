@@ -88,7 +88,12 @@ export default defineComponent({
                 password: this.password,
                 empresa: this.empresa.value
             })
-            console.log(result)
+            this.$q.notify({
+                type: 'positive',
+                message: 'O cadastro foi realizado com sucesso!'
+            })
+            this.$router.push({name: "Index"})
+            //console.log(result)
         }
        
     },
@@ -96,7 +101,6 @@ export default defineComponent({
         return  (val != null && val.length > 0 || 'Este campo não pode estar vazio')
     },
     ValidarCampoEmpresaNaoVazio (val) {
-        console.log(val)
         return  (val != null && val != "" && typeof val != undefined || 'Este campo não pode estar vazio')
     }
   }
