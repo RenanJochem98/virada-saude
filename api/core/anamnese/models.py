@@ -1,4 +1,5 @@
-from unittest import result
+# from turtle import mode
+# from unittest import result
 from django.db import models
 import inspect
 
@@ -51,5 +52,24 @@ class PerguntasAnamnese(models.Model):
     texto = models.CharField("texto", max_length=150, blank=False, null=False)
     tipo = models.CharField("tipo", max_length=150, blank=False, null=False) # texto, numerico, opcoes
     campo_anamnese_correspondente = models.CharField("campo_anamnese_correspondente", max_length=100, null=False, blank=False, unique=True, choices=tuple(campos_anamnese_correspondente_opcoes))
-    depende_de = models.IntegerField("depende_de", null=True)
+    depende_de = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="depende_de",
+        related_name="depende_de"
+    )
+
+class OpcaoRespostaAnamnese(models.Model):
+    id_opcao_resposta_anamnese = models.AutoField(primary_key=True)
+    id_pergunta_anamnese = models.ForeignKey(
+        PerguntasAnamnese,
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="id_pergunta_anamnese",
+        related_name="opcoes"
+    )
+    texto = models.CharField("texto", max_length=150, blank=False, null=False)
 
