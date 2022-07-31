@@ -14,10 +14,10 @@ class UserSerializer(serializers.ModelSerializer):
     """
 
     # token = serializers.CharField(source="auth_token.key", read_only=True)
-    empresa = EmpresaSerializer(many=False, read_only=True)
+    #empresa = EmpresaSerializer(many=False, read_only=False)
     class Meta:
         model = User
-        fields = ["id", "email", "password", "first_name", "last_name", "created", "modified", "empresa"]
+        fields = ("id", "email", "password", "first_name", "last_name", "created", "modified", "empresa")
         read_only_fields = ["created", "modified"]
         extra_kwargs = {
             'password': {'write_only': True}
