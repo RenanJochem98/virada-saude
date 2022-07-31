@@ -18,9 +18,12 @@ User = get_user_model()
 
 # class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    # def post(self, request, *args, **kwargs):
+    #     return Response({"hello": "world"}, status=status.HTTP_201_CREATED)
 
     '''
     def get_serializer_class(self):
