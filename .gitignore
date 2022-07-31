@@ -13,3 +13,4 @@ api/core/*/*/*/__pycache__
 # api/core/empresa/__pycache__
 # api/core/empresa/api/__pycache__
 # api/core/empresa/migrations/__pycache__
+frontend/package-lock.json

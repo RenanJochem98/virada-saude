@@ -1,5 +1,6 @@
 /.vscode
 /imagens_base
+package-lock.json
 
 # Default Quasar Framework .gitignore
 .DS_Store
