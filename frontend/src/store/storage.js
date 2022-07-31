@@ -1,3 +1,5 @@
+export const clearLocalStorage = () => localStorage.clear()
+
 export const getLocalAccessToken = () => localStorage.getItem('accessToken')
 export const removeLocalAccessToken = () => localStorage.removeItem('accessToken')
 export const setLocalAccessToken = (accessToken) => localStorage.setItem('accessToken', accessToken)

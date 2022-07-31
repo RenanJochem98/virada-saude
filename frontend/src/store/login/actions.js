@@ -11,10 +11,9 @@ export const ActionSetRefreshToken = ({ commit }, payload) => {
 }
 
 export const ActionLogout = ({ dispatch }) => {
-    dispatch('ActionSetToken', '')
+    dispatch('ActionSetAccessToken', '')
     dispatch('ActionSetRefreshToken', '')
-  
-    storage.removeLocalAccessToken()
-    storage.removeLocalRefreshToken()
+
+    storage.clearLocalStorage()
 }
   

@@ -3,6 +3,7 @@
     <q-header elevated class="custom-header">
       <q-toolbar>
         <q-toolbar-title> Virada Saúde </q-toolbar-title>
+        <BtnLogout />
       </q-toolbar>
     </q-header>
 
@@ -20,8 +21,9 @@
 <script>
 
 import { defineComponent, ref } from "vue";
-
+import BtnLogout from 'src/components/Buttons/BtnLogout.vue'
 export default defineComponent({
-  name: "DefaultLayout"
+  name: "DefaultLayout",
+  components: { BtnLogout }
 });
 </script>
