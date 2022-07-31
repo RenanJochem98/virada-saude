@@ -10,10 +10,7 @@ class GenericController {
     }
 
     static mountHeaders(){
-        console.log("store login", store.getters['login/getAccessToken'])
-        // console.log("mountHeaders", store.dispatch('login/ActionGetAccessToken'))
         return { headers: { Authorization: 'Bearer ' + store.getters['login/getAccessToken'] } }
-        // return store.getters['login/getAccessToken']
     }
 
     static async Get(baseUrl, needHeaders) {
