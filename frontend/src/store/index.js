@@ -12,16 +12,25 @@ import login from './login'
  * with the Store instance.
  */
 
-export default store(function (/* { ssrContext } */) {
-  const Store = createStore({
-    modules: {
-      login
-    },
+export default createStore({
+  modules: {
+    login
+  },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
-    strict: process.env.DEBUGGING,
-  });
-
-  return Store;
+  // enable strict mode (adds overhead!)
+  // for dev mode and --debug builds only
+  strict: process.env.DEBUGGING,
 });
+// export default store(function (/* { ssrContext } */) {
+//   const Store = createStore({
+//     modules: {
+//       login
+//     },
+
+//     // enable strict mode (adds overhead!)
+//     // for dev mode and --debug builds only
+//     strict: process.env.DEBUGGING,
+//   });
+
+//   return Store;
+// });
