@@ -29,7 +29,7 @@
 </style>
 <script>
 import { defineComponent } from "vue";
-
+import { PerguntaAnamnseController } from '../services/controllers/PerguntasAnamneseController'
 const options = [
     {
         label: 'Option 1',
@@ -57,7 +57,14 @@ export default defineComponent({
         questionRefPrefix: "questionRef"
     };
   },
+  beforeMount(){
+    this.buscarPerguntas()
+  },
   methods: {
+      async buscarPerguntas(){
+        this.options = await PerguntaAnamnseController.BuscarTodasPerguntas()
+        console.log('questionario options', this.options)
+      },
       sendAnswers () {
         this.clicouEmEnviar = true
         let temErro = false
