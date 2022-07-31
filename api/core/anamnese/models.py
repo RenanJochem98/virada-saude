@@ -32,6 +32,8 @@ class Anamnese(models.Model):
         for i in inspect.getmembers(Anamnese):
              if not i[0].startswith('_') and not inspect.isclass(i[1]) and not inspect.ismethod(i[1]) and not inspect.isfunction(i[1]) and not i[0] == 'objects':
                 resultadoClasseAtual.append(i[0])
+        resultadoClasseAtual.sort()
+        resultadoClassePai.sort()
         resultado = set(resultadoClasseAtual) - set(resultadoClassePai)
         #print(tuple(resultado))
         return resultado
@@ -39,10 +41,12 @@ class Anamnese(models.Model):
 class PerguntasAnamnese(models.Model):
     #anamnese = Anamnese()
     campos_anamnese = Anamnese.buscar_campos_anamnese()
+    # campos_anamnese.sort()
     campos_anamnese_correspondente_opcoes = []
     for campo in campos_anamnese:
         campos_anamnese_correspondente_opcoes.append((campo, campo))
 
+    # campos_anamnese_correspondente_opcoes.sort()
     id_pergunta_anamnese = models.AutoField(primary_key=True)
     texto = models.CharField("texto", max_length=150, blank=False, null=False)
     tipo = models.CharField("tipo", max_length=150, blank=False, null=False) # texto, numerico, opcoes
