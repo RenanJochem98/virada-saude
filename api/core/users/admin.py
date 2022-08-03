@@ -21,10 +21,15 @@ User = get_user_model()
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = (
-        "email",
-        "is_active",
+        "id", "email", "first_name", "last_name", "empresa", "is_active", "is_staff", "is_superuser"
     )
-    ordering = ("email",)
+
+    list_filter = ("is_active", "empresa", "is_active", "is_staff", "is_superuser")
+    search_fields = ("email", "first_name", "last_name", "empresa")
+
+    list_editable=('first_name', 'last_name', "empresa", "is_active", "is_staff", "is_superuser")
+    ordering = ("id",)
+    # exclude = ('dat_emission', )
     fieldsets = (
         (
             None,
@@ -41,12 +46,12 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2"),
+                "fields": ("email", "password1", "password2",
+                            "first_name", "last_name", "empresa", "is_active", "is_staff", "is_superuser"),
             },
         ),
     )
-    list_filter = ("is_active",)
-    search_fields = ("email", "username")
+    
 
 
 admin.site.unregister(Group)
