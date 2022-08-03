@@ -21,7 +21,7 @@ class PeguntasAnamneseSerializer(serializers.ModelSerializer):
     """
     Serializer representando os dados de uma anamnese
     """
-    opcoes = OpcaoRespostaAnamneseSerializer
+    opcoes = OpcaoRespostaAnamneseSerializer(many=True, read_only=True)
     depende_de = OpcaoRespostaAnamneseSerializer(many=False, read_only=False)
     class Meta:
         model = PerguntasAnamnese
