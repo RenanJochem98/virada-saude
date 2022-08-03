@@ -50,7 +50,7 @@ class PerguntasAnamnese(models.Model):
     # campos_anamnese_correspondente_opcoes.sort()
     id_pergunta_anamnese = models.AutoField(primary_key=True)
     texto = models.CharField("texto", max_length=150, blank=False, null=False)
-    tipo = models.CharField("tipo", max_length=150, blank=False, null=False) # texto, numerico, opcoes
+    tipo = models.CharField("tipo", max_length=150, blank=False, null=False, choices=(("texto","Texto"), ("select", "Select"), ("multiselect", "Multiselect"), ("numerico", "Numérico"))) # texto, numerico, opcoes
     campo_anamnese_correspondente = models.CharField("campo_anamnese_correspondente", max_length=100, null=False, blank=False, unique=True, choices=tuple(campos_anamnese_correspondente_opcoes))
     depende_de = models.ForeignKey(
         "anamnese.OpcaoRespostaAnamnese",
@@ -61,15 +61,28 @@ class PerguntasAnamnese(models.Model):
         related_name="depende_de"
     )
 
+    def __str__(self):
+        return str(self.id_pergunta_anamnese) +": " + self.texto
+    
+    class Meta:
+        verbose_name = "Pergunta da Anamnese"
+        verbose_name_plural = "Perguntas da Anamnese"
+
 class OpcaoRespostaAnamnese(models.Model):
     id_opcao_resposta_anamnese = models.AutoField(primary_key=True)
     id_pergunta_anamnese = models.ForeignKey(
         PerguntasAnamnese,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         blank=True,
         null=True,
         db_column="id_pergunta_anamnese",
         related_name="opcoes"
     )
     texto = models.CharField("texto", max_length=150, blank=False, null=False)
+
+    def BuscarPergunta(self):
+        return PerguntasAnamnese.objects.get(id_pergunta_anamnese = self.id_pergunta_anamnese.id_pergunta_anamnese)
+    
+    def __str__(self):
+        return self.BuscarPergunta().texto +": " + self.texto
 
