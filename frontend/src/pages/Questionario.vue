@@ -5,14 +5,16 @@
         <div class="text-center text-weight-bolder q-mt-sm">Breve descrição sobre o questionario</div>
         
         <div class="row flex flex-center q-mt-lg q-pt-lg">
-            <div v-for="(index, i) in questions" :key="i" class="col-12 q-mt-lg">
-                <div class="text-center text-weight-medium">{{i + 1}} - Enunciado da questão</div>
+            <div v-for="(pergunta, i) in perguntas" :key="i" class="col-12 q-mt-lg">
+                <div v-if="pergunta.dependeDe == null">
+                    <div class="text-center text-weight-medium">{{i + 1}} - {{pergunta.texto}}</div>
                 
-                <div v-if="clicouEmEnviar && (respostas[index] == null || respostas[index] === undefined)" class="text-negative text-center text-caption q-mt-xs q-mb-sm">Campo obrigatório</div>
+                    <div v-if="clicouEmEnviar && (respostas[pergunta.idPerguntaAnamnese] == null || respostas[pergunta.idPerguntaAnamnese] === undefined)" class="text-negative text-center text-caption q-mt-xs q-mb-sm">Campo obrigatório</div>
 
-                <div class="q-mt-sm col-12">
-                    <q-option-group :ref="questionRefPrefix + index" v-model="respostas[index]" :options="options"  class="flex justify-center items-center"
-                    @update:model-value="respostas[index] == $event"/>
+                    <div class="q-mt-sm col-12">
+                        <q-option-group :ref="questionRefPrefix + pergunta.idPerguntaAnamnese" v-model="respostas[pergunta.idPerguntaAnamnese]" :options="pergunta.opcoesResposta"  class="flex justify-center items-center"
+                        @update:model-value="respostas[pergunta.idPerguntaAnamnese] == $event"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +56,8 @@ export default defineComponent({
         respostas: {},
         questions: [6,5,4],
         clicouEmEnviar: false,
-        questionRefPrefix: "questionRef"
+        questionRefPrefix: "questionRef",
+        perguntas: []
     };
   },
   beforeMount(){
@@ -62,8 +65,18 @@ export default defineComponent({
   },
   methods: {
       async buscarPerguntas(){
-        this.options = await PerguntaAnamnseController.BuscarTodasPerguntas()
-        console.log('questionario options', this.options)
+        const perguntas = await PerguntaAnamnseController.BuscarTodasPerguntasParaSelectField()
+        if(perguntas.status) {
+            if(perguntas.status == 401) {
+                this.$q.notify({
+                    type: 'negative',
+                    message: perguntas.mensagem
+                })
+            }
+        } else {
+            this.perguntas = perguntas
+        }
+        console.log('questionario options', this.perguntas)
       },
       sendAnswers () {
         this.clicouEmEnviar = true

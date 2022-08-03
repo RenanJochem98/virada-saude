@@ -8,8 +8,8 @@ class GenericSerializer {
         }
     }
 
-    static SerializeListToSelectField(list, nameKeyField, nameValueField) {
-        return list.map(element => this.SerializeToSelectField(element, nameKeyField, nameValueField))
+    static SerializeListToSelectField(list, nameKeyFieldToLabel, nameValueField) {
+        return list.map(element => this.SerializeToSelectField(element, nameKeyFieldToLabel, nameValueField))
     }
 }
 

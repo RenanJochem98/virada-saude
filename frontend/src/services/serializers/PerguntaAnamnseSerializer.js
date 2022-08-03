@@ -20,6 +20,26 @@ class PerguntaAnamnseSerializer extends GenericSerializer {
         })
         return listResult
     }
+
+    static SerializePerguntaAnamneseParaSelectField(params) {
+        return {
+            idPerguntaAnamnese: params.id_pergunta_anamnese,
+            texto: params.texto,
+            tipo: params.tipo,
+            campoAnamneseCorrespondente: params.campo_anamnese_correspondente,
+            dependeDe: params.depende_de,
+            opcoesResposta: this.SerializeListToSelectField(params.opcoes, "texto", "id_opcao_resposta_anamnese")
+        }
+    }
+
+    static SerializeListaPerguntaAnamneseParaSelectField(lista){
+        let listResult = []
+        lista.forEach(element => {
+            let perguntaSerializada = this.SerializePerguntaAnamneseParaSelectField(element)
+            listResult.push(perguntaSerializada)
+        })
+        return listResult
+    }
     
     static DeserializeLogin(params) {
         return {
