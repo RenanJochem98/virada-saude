@@ -9,14 +9,14 @@ from users.models import RegistrationForm
 User = get_user_model()
 
 
-@admin.register(RegistrationForm)
-class RegistrationFormAdmin(admin.ModelAdmin):
-    model = RegistrationForm
-    list_display = ["name"]
+# @admin.register(RegistrationForm)
+# class RegistrationFormAdmin(admin.ModelAdmin):
+#     model = RegistrationForm
+#     list_display = ["name"]
 
-    def changelist_view(self, request, *args, **kwargs):
-        self.request = request
-        return super().changelist_view(request, *args, **kwargs)
+#     def changelist_view(self, request, *args, **kwargs):
+#         self.request = request
+#         return super().changelist_view(request, *args, **kwargs)
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
