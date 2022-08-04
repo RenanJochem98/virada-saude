@@ -15,7 +15,14 @@ class Anamnese(models.Model):
         db_column="pratica_corrida",
         related_name="pratica_corrida"
     )
-    # atividade_fisica = models.IntegerField("atividade_fisica", null=False)
+    atividade_fisica = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="atividade_fisica",
+        related_name="atividade_fisica"
+    )
     # dieta = models.IntegerField("dieta", null=False)
     # pressao_arterial = models.CharField("pressao_arterial", max_length=10, null=False)
     # tem_lesao = models.IntegerField("tem_lesao", null=False)

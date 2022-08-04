@@ -7,7 +7,7 @@ from .models import OpcaoRespostaAnamnese, PerguntasAnamnese, Anamnese
 class AnamneseAdmin(admin.ModelAdmin):
     list_display=('id_anamnese',
                   'pratica_corrida',
-                #   'atividade_fisica',
+                  'atividade_fisica',
                 #   'dieta',
                 #   'pressao_arterial',
                 #   'tem_lesao',
