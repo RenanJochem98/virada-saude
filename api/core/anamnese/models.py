@@ -61,17 +61,15 @@ class Anamnese(models.Model):
 
 class PerguntasAnamnese(models.Model):
     #anamnese = Anamnese()
-    # campos_anamnese = Anamnese.buscar_campos_anamnese()
-    # campos_anamnese.sort()
-    # campos_anamnese_correspondente_opcoes = []
-    # for campo in campos_anamnese:
-    #     campos_anamnese_correspondente_opcoes.append((campo, campo))
+    campos_anamnese = Anamnese.buscar_campos_anamnese()
+    campos_anamnese_correspondente_opcoes = []
+    for campo in campos_anamnese:
+        campos_anamnese_correspondente_opcoes.append((campo, campo))
 
-    # campos_anamnese_correspondente_opcoes.sort()
     id_pergunta_anamnese = models.AutoField(primary_key=True)
     texto = models.CharField("texto", max_length=150, blank=False, null=False)
     tipo = models.CharField("tipo", max_length=150, blank=False, null=False, choices=(("texto","Texto"), ("select", "Select"), ("multiselect", "Multiselect"), ("numerico", "Numérico"))) # texto, numerico, opcoes
-    # campo_anamnese_correspondente = models.CharField("campo_anamnese_correspondente", max_length=100, null=False, blank=False, unique=True, choices=tuple(campos_anamnese_correspondente_opcoes))
+    campo_anamnese_correspondente = models.CharField("campo_anamnese_correspondente", max_length=100, null=True, blank=False, unique=True, choices=tuple(campos_anamnese_correspondente_opcoes))
     depende_de = models.ForeignKey(
         "anamnese.OpcaoRespostaAnamnese",
         on_delete=models.RESTRICT,
