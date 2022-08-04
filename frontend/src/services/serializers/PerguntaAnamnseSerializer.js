@@ -8,7 +8,7 @@ class PerguntaAnamnseSerializer extends GenericSerializer {
             texto: params.texto,
             tipo: params.tipo,
             campoAnamneseCorrespondente: params.campo_anamnese_correspondente,
-            dependeDe: params.depende_de
+            dependeDe: params.depende_de == null ? null : this.SerializarOpcaoResposta(params.depende_de)
         }
     }
 
@@ -27,7 +27,7 @@ class PerguntaAnamnseSerializer extends GenericSerializer {
             texto: params.texto,
             tipo: params.tipo,
             campoAnamneseCorrespondente: params.campo_anamnese_correspondente,
-            dependeDe: params.depende_de,
+            dependeDe: params.depende_de == null ? null : this.SerializarOpcaoResposta(params.depende_de),
             opcoesResposta: this.SerializeListToSelectField(params.opcoes, "texto", "id_opcao_resposta_anamnese")
         }
     }
@@ -48,6 +48,14 @@ class PerguntaAnamnseSerializer extends GenericSerializer {
             tipo: params.tipo,
             campo_anamnese_correspondente: params.campoAnamneseCorrespondente,
             depende_de: params.dependeDe
+        }
+    }
+
+    static SerializarOpcaoResposta(params) {
+        return {
+            idOpcaoRespostaAnamnese: params.id_opcao_resposta_anamnese,
+            idPerguntaAnamnese: params.id_pergunta_anamnese,
+            texto: params.texto
         }
     }
 }
