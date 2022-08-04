@@ -1,27 +1,24 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import OpcaoRespostaAnamnese, PerguntasAnamnese#, Anamnese
+from .models import OpcaoRespostaAnamnese, PerguntasAnamnese, Anamnese
 
-# @admin.register(OpcaoRespostaAnamnese)
-# class OpcaoRespostaAnamneseAdmin(admin.ModelAdmin):
-#    list_display = ("id_opcao_resposta_anamnese", "id_pergunta_anamnese", "texto")
-# @admin.register(Anamnese)
-# class AnamneseAdmin(admin.ModelAdmin):
-#     list_display=('id_anamnese',
-#                   'pratica_corrida2',
-#                   'atividade_fisica',
-#                   'dieta',
-#                   'pressao_arterial',
-#                   'tem_lesao',
-#                   'dores_musculares',
-#                   'diabetes',
-#                   'problema_coronariano',
-#                   'competitividade',
-#                   'condicao_fisica',
-#                   'nivel_apitidao',
-#                   'tempo_disponivel',
-#                   )
+@admin.register(Anamnese)
+class AnamneseAdmin(admin.ModelAdmin):
+    list_display=('id_anamnese',
+                  'pratica_corrida',
+                #   'atividade_fisica',
+                #   'dieta',
+                #   'pressao_arterial',
+                #   'tem_lesao',
+                #   'dores_musculares',
+                #   'diabetes',
+                #   'problema_coronariano',
+                #   'competitividade',
+                #   'condicao_fisica',
+                #   'nivel_apitidao',
+                #   'tempo_disponivel',
+                  )
 
 class OpcaoRespostaAnamneseInline(admin.TabularInline):
     model = OpcaoRespostaAnamnese
