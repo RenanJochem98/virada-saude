@@ -1,15 +1,15 @@
 from rest_framework import serializers
 
-from anamnese.models import Anamnese, PerguntasAnamnese, OpcaoRespostaAnamnese
+from anamnese.models import PerguntasAnamnese, OpcaoRespostaAnamnese # Anamnese, 
 
-class AnamneseSerializer(serializers.ModelSerializer):
-    """
-    Serializer representando os dados de uma anamnese
-    """
+# class AnamneseSerializer(serializers.ModelSerializer):
+#     """
+#     Serializer representando os dados de uma anamnese
+#     """
 
-    class Meta:
-        model = Anamnese
-        fields = ["id_anamnese"]
+#     class Meta:
+#         model = Anamnese
+#         fields = ["id_anamnese"]
 
 class OpcaoRespostaAnamneseSerializer(serializers.ModelSerializer):
 
@@ -28,6 +28,6 @@ class PeguntasAnamneseSerializer(serializers.ModelSerializer):
         fields = ["id_pergunta_anamnese",
                   "texto",
                   "tipo",
-                  "campo_anamnese_correspondente",
-                  "depende_de",
+                #   "campo_anamnese_correspondente",
+                #   "depende_de",
                   "opcoes"]
