@@ -7,7 +7,7 @@ from .models import OpcaoRespostaAnamnese, PerguntasAnamnese, Anamnese
 class AnamneseAdmin(admin.ModelAdmin):
     ordering = ("id_anamnese",)
     list_display=('id_anamnese',
-                #   'usuario',
+                  'id_usuario',
                   'pratica_corrida',
                   'atividade_fisica',
                 #   'dieta',
@@ -21,6 +21,18 @@ class AnamneseAdmin(admin.ModelAdmin):
                 #   'nivel_apitidao',
                 #   'tempo_disponivel',
                   )
+    # fieldsets = (
+    #     (
+    #         None,
+    #         {
+    #             "fields": (
+    #                 'pratica_corrida',
+    #                 'atividade_fisica',
+                    
+    #                 )
+    #         },
+    #     ),
+    # )
 
 class OpcaoRespostaAnamneseInline(admin.TabularInline):
     model = OpcaoRespostaAnamnese
