@@ -21,13 +21,13 @@ User = get_user_model()
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = (
-        "id", "email", "first_name", "last_name", "empresa", "is_active", "is_staff", "is_superuser"
+        "id", "email", "first_name", "last_name", "empresa", "anamnese", "is_active", "is_staff", "is_superuser"
     )
 
-    list_filter = ("is_active", "empresa", "is_active", "is_staff", "is_superuser")
+    # list_filter = ("is_active", "empresa", "is_active", "is_staff", "is_superuser")
     search_fields = ("email", "first_name", "last_name", "empresa")
 
-    list_editable=('first_name', 'last_name', "empresa", "is_active", "is_staff", "is_superuser")
+    list_editable=('first_name', 'last_name', "empresa", "anamnese", "is_active", "is_staff", "is_superuser")
     ordering = ("id",)
     # exclude = ('dat_emission', )
     fieldsets = (
