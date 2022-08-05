@@ -10,8 +10,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 # from django.core.exceptions import PermissionDenied
 from django.db import models
-# from exams.models import Exam
-from anamnese.models import Anamnese
+# from anamnese.models import Anamnese
 
 hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
 
@@ -79,14 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True
     )
 
-    anamnese = models.OneToOneField(
-        Anamnese,
-        verbose_name="Anamnese",
-        related_name="id_usuario",
-        on_delete=models.RESTRICT,
-        blank=True,
-        null=True
-    )
+   
     
     objects = UserManager()
 
