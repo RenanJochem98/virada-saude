@@ -7,6 +7,7 @@ from .models import OpcaoRespostaAnamnese, PerguntasAnamnese, Anamnese
 class AnamneseAdmin(admin.ModelAdmin):
     ordering = ("id_anamnese",)
     list_display=('id_anamnese',
+                #   'usuario',
                   'pratica_corrida',
                   'atividade_fisica',
                 #   'dieta',
