@@ -1,12 +1,22 @@
 # from turtle import mode
 # from unittest import result
-from django.db import models
 import inspect
+from django.db import models
+from users.models import User
 
 # Create your models here.
 class Anamnese(models.Model):
     id_anamnese = models.AutoField(primary_key=True)
     # pratica_corrida = models.IntegerField("pratica_corrida", null=False)
+    usuario = models.ForeignKey(
+        "users.User",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="usuario",
+        related_name="usuario"
+    )
+
     pratica_corrida = models.ForeignKey(
         "anamnese.OpcaoRespostaAnamnese",
         on_delete=models.RESTRICT,

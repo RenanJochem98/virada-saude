@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 # from django.core.exceptions import PermissionDenied
 from django.db import models
 # from exams.models import Exam
-
+# from anamnese.models import Anamnese
 
 hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
 
@@ -97,3 +97,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+    # def BuscarAnamneses(self):
+    #     return Anamnese.objects.get(usuario = self.id)
