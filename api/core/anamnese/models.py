@@ -3,6 +3,7 @@
 import inspect
 from django.db import models
 from users.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Anamnese(models.Model):
@@ -17,7 +18,7 @@ class Anamnese(models.Model):
         related_name="anamnese"
     )
 
-    pratica_corrida = models.ForeignKey(
+    pratica_corrida = models.ForeignKey( 
         "anamnese.OpcaoRespostaAnamnese",
         on_delete=models.RESTRICT,
         blank=True,
@@ -51,6 +52,8 @@ class Anamnese(models.Model):
     #     db_column="tempo_disponivel",
     #     related_name="tempo_disponivel"
     # )
+    data_criacao = models.DateTimeField("data_criacao", default=timezone.now)
+    data_modificacao = models.DateTimeField("data_modificacao", auto_now=True)
 
     @staticmethod
     def buscar_campos_anamnese():
