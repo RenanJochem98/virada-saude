@@ -5,6 +5,7 @@ from .models import OpcaoRespostaAnamnese, PerguntasAnamnese, Anamnese
 
 @admin.register(Anamnese)
 class AnamneseAdmin(admin.ModelAdmin):
+    ordering = ("id_anamnese",)
     list_display=('id_anamnese',
                   'pratica_corrida',
                   'atividade_fisica',
