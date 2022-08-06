@@ -10,7 +10,7 @@ class AnamneseAdmin(admin.ModelAdmin):
                   'usuario',
                   'pratica_corrida',
                   'atividade_fisica',
-                #   'dieta',
+                  'dieta',
                 #   'pressao_arterial',
                 #   'tem_lesao',
                 #   'dores_musculares',
@@ -29,6 +29,7 @@ class AnamneseAdmin(admin.ModelAdmin):
                 "fields": (
                     'pratica_corrida',
                     'atividade_fisica',
+                    'dieta',
                     )
             },
         ),

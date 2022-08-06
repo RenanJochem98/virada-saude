@@ -10,14 +10,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import  viewsets #mixins,
 
 from anamnese.api.serializers import (
-    # AnamneseSerializer,
+    AnamneseSerializer,
     PeguntasAnamneseSerializer
 )
-from anamnese.models import PerguntasAnamnese #Anamnese, 
+from anamnese.models import PerguntasAnamnese, Anamnese 
 
-# class AnamneseViewSet(viewsets.ModelViewSet):
-#     queryset = Anamnese.objects.all()
-#     serializer_class = AnamneseSerializer
+class AnamneseViewSet(viewsets.ModelViewSet):
+    queryset = Anamnese.objects.all()
+    serializer_class = AnamneseSerializer
 
 class PerguntasAnamneseViewSet(viewsets.ModelViewSet):
     queryset = PerguntasAnamnese.objects.all()
