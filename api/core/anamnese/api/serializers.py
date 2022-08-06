@@ -19,7 +19,7 @@ class PeguntasAnamneseSerializer(serializers.ModelSerializer):
         fields = ["id_pergunta_anamnese",
                   "texto",
                   "tipo",
-                #   "campo_anamnese_correspondente",
+                  "campo_anamnese_correspondente",
                   "depende_de",
                   "opcoes"]
 
