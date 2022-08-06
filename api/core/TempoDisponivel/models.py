@@ -2,10 +2,10 @@ from django.db import models
 from users.models import User
 from django.utils import timezone
 
-class DiaSemana:
+class DiaSemana(models.Model):
 
     id_dia_semana = models.AutoField(primary_key=True)
-    nome = models.CharField("nome", null=False)
+    nome = models.CharField("nome", max_length=50, null=False)
     data_criacao = models.DateTimeField("data_criacao", default=timezone.now)
     data_modificacao = models.DateTimeField("data_modificacao", auto_now=True)
 
