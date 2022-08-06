@@ -29,5 +29,5 @@ class PeguntasAnamneseSerializer(serializers.ModelSerializer):
                   "texto",
                   "tipo",
                 #   "campo_anamnese_correspondente",
-                #   "depende_de",
+                  "depende_de",
                   "opcoes"]
