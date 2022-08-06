@@ -10,10 +10,14 @@
 from rest_framework import  viewsets #mixins,
 
 from TempoDisponivel.api.serializers import (
-    TempoDisponivelSerializer
+    TempoDisponivelSerializer, DiaSemanaSerializer
 )
-from TempoDisponivel.models import TempoDisponivel
+from TempoDisponivel.models import TempoDisponivel, DiaSemana
 
 class TempoDisponivelViewSet(viewsets.ModelViewSet):
     queryset = TempoDisponivel.objects.all()
     serializer_class = TempoDisponivelSerializer
+
+class DiaSemanaViewSet(viewsets.ModelViewSet):
+    queryset = DiaSemana.objects.all()
+    serializer_class = DiaSemanaSerializer

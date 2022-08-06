@@ -1,12 +1,15 @@
 from rest_framework import serializers
 
-from TempoDisponivel.models import TempoDisponivel
+from TempoDisponivel.models import TempoDisponivel, DiaSemana
 
 class TempoDisponivelSerializer(serializers.ModelSerializer):
-    """
-    Serializer representando os dados de uma empresa
-    """
 
     class Meta:
         model = TempoDisponivel
-        # fields = ["idempresa", "nome"]
+        fields = ["id_tempo_disponivel", "id_dia_semana"]
+
+class DiaSemanaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DiaSemana
+        fields = ["id_dia_semana", "nome"]
