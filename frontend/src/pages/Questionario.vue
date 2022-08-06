@@ -39,6 +39,7 @@
 <script>
 import { defineComponent } from "vue";
 import { PerguntaAnamnseController } from '../services/controllers/PerguntasAnamneseController'
+import { AnamneseController } from '../services/controllers/AnamneseController'
 const options = [
 ]
 
@@ -165,11 +166,22 @@ export default defineComponent({
 
         return result
       },
+      montaEnvio () {
+        let resposta = {
+                usuario: 2
+            }
+        this.perguntasObrigatorias.forEach(e => {
+            resposta[e.campoAnamneseCorrespondente] = this.respostas[e.idPerguntaAnamnese]
+        })
+
+        return resposta
+      },
       sendAnswers () {
         console.log("perguntas: ", this.perguntas)
         console.log("perguntasObrigatorias: ", this.perguntasObrigatorias)
-        console.log("perguntasNaoObrigatorias: ", this.perguntasNaoObrigatorias)
+        // console.log("perguntasNaoObrigatorias: ", this.perguntasNaoObrigatorias)
         console.log("Respostas: ", this.respostas)
+        console.log("Respostas Monstadas: ", this.montaEnvio())
         // console.log("Refs: ", this.$refs)
         // console.log("questionRef1: ", this.$refs['questionRef1'])
         // console.log("question1: ", this.$refs['question1'])
@@ -179,10 +191,19 @@ export default defineComponent({
         const validacao = this.validaEnvio()
         // console.log("Validacao", validacao)
         if(validacao){
-             this.$q.notify({
-                    type: 'positive',
-                    message: "Formulario valido"
+            const result = AnamneseController.CriarAnamnese(this.montaEnvio())
+            if(result.status) {
+                this.$q.notify({
+                    type: 'negative',
+                    message: "Problema ao enviar status. Status retorno: " + result.status
                 })
+            } else {
+                this.$q.notify({
+                    type: 'positive',
+                    message: "Anamnese criada com sucesso!"
+                })
+            }
+             
         } else {
              this.$q.notify({
                     type: 'negative',
