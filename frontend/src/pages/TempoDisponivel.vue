@@ -33,6 +33,7 @@
 <script>
 import { defineComponent } from "vue";
 import { DiaSemanaController } from '../services/controllers/DiaSemanaController'
+import { TempoDisponivelController } from '../services/controllers/TempoDisponivelController'
 import InputTime  from 'src/components/Inputs/InputTime.vue'
 
 export default defineComponent({
@@ -89,8 +90,38 @@ export default defineComponent({
             this.diasSemana = diasSemana
         }
       },
-      enviar(){
+      async enviar(){
+        console.log("id user logado", this.$store.getters['user/getIdUser'])
         console.log("listaperiodos: ", this.listaPeriodos)
+
+        let teste = []
+        const list = Object.values(this.listaPeriodos)
+        console.log("list", list)
+        list.forEach(e => {
+            if(e.dia) {
+                let item = {
+                "id_dia_semana": e.dia.value,
+                "id_usuario": this.$store.getters['user/getIdUser'],
+                "hora_inicio": e.horaInicio,
+                "hora_fim": e.horaFim
+            }
+            teste.push(item)
+            }
+            
+        });
+        console.log("teste", teste)
+
+        // Deve ser alterado para um bulk create, quando a api aceitar
+        await teste.forEach(e => {
+            let result =  TempoDisponivelController.CriarTempoDisponivel(e)
+            console.log(result)
+        })
+
+        this.$q.notify({
+                type: 'positive',
+                message: 'Os períodos disponíveis foram cadastrados com sucesso!'
+            })
+        this.$router.push({name: "Home"})
       }
     }
 });
