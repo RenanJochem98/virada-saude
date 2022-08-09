@@ -18,6 +18,7 @@ from anamnese.models import PerguntasAnamnese, Anamnese
 class AnamneseViewSet(viewsets.ModelViewSet):
     queryset = Anamnese.objects.all()
     serializer_class = AnamneseSerializer
+    permission_classes = [IsAuthenticated]
 
 class PerguntasAnamneseViewSet(viewsets.ModelViewSet):
     queryset = PerguntasAnamnese.objects.all()
