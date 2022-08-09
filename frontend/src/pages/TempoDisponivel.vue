@@ -1,28 +1,36 @@
 <template>
-    <q-page>
+    <q-page padding>
         <div class="text-center text-h4 text-weight-bold q-ma-lg text-uppercase">Tempo Disponível</div>
+        <!-- <q-radio :options="this.diasSemana"/> -->
+        <q-select v-model="model" :options="diasSemana" label="Dia" />
 
-        <div class="q-px-lg ">
-            <!-- <div class="text-center text-h6 text-weight-medium q-mt-xl text-uppercase">Atividades</div> -->
-            <div class="row flex q-py-md text-uppercase text-weight-bold bg-grey-6">
-                <div class="col-1 flex-start text-center">ID</div>
-                <div class="col-4 flex-center text-center">Nome</div>
-                <div class="col-3 flex-center text-center">Tempo (em minutos)</div>
-                <div class="col-4 flex-center text-center">Intensidade</div>
-            </div>
-            <div v-for="(atividade, index) in treino.atividades" :key="atividade.id">
-                <div class="row flex q-py-lg" :class="index%2 == 0 ? '' : 'bg-grey-3'">
-                    <div class="col-1 flex-start text-center">{{ atividade.id }}</div>
-                    <div class="col-4 flex-center text-center">{{ atividade.nome}}</div>
-                    <div class="col-3 flex-center text-center">{{atividade.tempoEmMinutos}} minutos</div>
-                    <div class="col-4 flex-center text-center text-uppercase">{{atividade.intensidade }}</div>
-                </div>
-                <q-separator :key="'sep' + atividade.id" />
-            </div>
-            <div class="row flex flex-center q-py-lg">
-                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Treino' }" />
-            </div>
-        </div>
+        <q-input filled v-model="horaInicio" mask="time" :rules="['time']">
+            <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-time v-model="horaInicio">
+                    <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Fechar" color="primary" flat />
+                    </div>
+                </q-time>
+                </q-popup-proxy>
+            </q-icon>
+            </template>
+        </q-input>
+
+        <q-input filled v-model="horaFim" mask="time" :rules="['time']">
+            <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-time v-model="horaFim">
+                    <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                </q-time>
+                </q-popup-proxy>
+            </q-icon>
+            </template>
+        </q-input>
     </q-page>
 </template>
 <style lang="scss">
@@ -34,33 +42,35 @@
 
 <script>
 import { defineComponent } from "vue";
-
-const treino = {
-    dataReferencia: '2022-03-28',
-    tempoTotalEmMinutos: 60,
-    atividades: [
-        {
-            id: 1,
-            nome: 'Caminhada',
-            descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
-            tempoEmMinutos: 10,
-            intensidade: 'leve'
-        },
-        {
-            id: 2,
-            nome: 'Corrida',
-            descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
-            tempoEmMinutos: 10,
-            intensidade: 'pesado'
-        }
-    ]
-}
+import { DiaSemanaController } from '../services/controllers/DiaSemanaController'
 export default defineComponent({
-  name: "ProximoTreino",
+  name: "TempoDisponivel",
   data: () => {
       return {
-        treino
+        diasSemana: [],
+        model: "",
+        horaInicio: "00:00",
+        horaFim: "00:00"
       }
-  }
+  },
+  beforeMount(){
+    this.buscarPerguntas()
+  },
+  methods: {
+      async buscarPerguntas(){
+        const diasSemana = await DiaSemanaController.BuscarDiasSemana()
+        console.log("diasSemana", diasSemana)
+        if(diasSemana.status) {
+            if(diasSemana.status == 401) {
+                this.$q.notify({
+                    type: 'negative',
+                    message: diasSemana.mensagem
+                })
+            }
+        } else {
+            this.diasSemana = diasSemana
+        }
+      }
+    }
 });
 </script>
