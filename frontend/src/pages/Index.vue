@@ -49,6 +49,7 @@ import { defineComponent } from "vue";
 import InputEmail from 'components/Inputs/InputEmail.vue'
 import InputPassword from 'components/Inputs/InputPassword.vue'
 import { UserController } from '../services/controllers/UserController'
+import jwt_decode from "jwt-decode"
 export default defineComponent({
   name: "Index",
   components: {InputEmail, InputPassword},
@@ -66,15 +67,22 @@ export default defineComponent({
         if(!hasEmailError && !hasPasswordError){
             const result = await UserController.Login(this.email, this.password)
             if(!result.status) {
+                const decoded = jwt_decode(result.accessToken);
                 await this.$store.dispatch('login/ActionSetAccessToken', result.accessToken)
                 await this.$store.dispatch('login/ActionSetRefreshToken', result.refreshToken)
-                
+                //await this.$store.dispatch('login/ActionSetIdUser', result.decoded.user_id)
                 this.$q.notify({
                     type: 'positive',
                     message: "Login realizado com sucesso!"
                 })
-
-                this.$router.push({ name: 'Questionario' })
+                if(!decoded.possui_anamnese){
+                    this.$router.push({ name: 'Questionario' })
+                } else if(!decoded.possui_tempo_disponivel_cadastrado) {
+                    this.$router.push({ name: 'TempoDisponivel' })
+                }else {
+                    this.$router.push({ name: 'Home' })
+                }
+                
             } else {
                 this.$q.notify({
                     type: 'negative',
