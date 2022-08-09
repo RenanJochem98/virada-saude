@@ -11,6 +11,7 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title> Virada Saúde </q-toolbar-title>
+        <BtnLogout />
       </q-toolbar>
     </q-header>
 
@@ -53,7 +54,7 @@
 
 import { defineComponent, ref } from "vue";
 import { Notify } from 'quasar'
-
+import BtnLogout from 'src/components/Buttons/BtnLogout.vue'
 const menuList = [
   {
     icon: 'calendar_month',
@@ -108,6 +109,7 @@ export default defineComponent({
     }
     
   },
+  components: { BtnLogout },
   methods: {
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
