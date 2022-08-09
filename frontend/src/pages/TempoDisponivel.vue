@@ -1,36 +1,26 @@
 <template>
     <q-page padding>
         <div class="text-center text-h4 text-weight-bold q-ma-lg text-uppercase">Tempo Disponível</div>
-        <!-- <q-radio :options="this.diasSemana"/> -->
-        <q-select v-model="model" :options="diasSemana" label="Dia" />
-
-        <q-input filled v-model="horaInicio" mask="time" :rules="['time']">
-            <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-time v-model="horaInicio">
-                    <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Fechar" color="primary" flat />
-                    </div>
-                </q-time>
-                </q-popup-proxy>
-            </q-icon>
-            </template>
-        </q-input>
-
-        <q-input filled v-model="horaFim" mask="time" :rules="['time']">
-            <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-time v-model="horaFim">
-                    <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                </q-time>
-                </q-popup-proxy>
-            </q-icon>
-            </template>
-        </q-input>
+        <div v-for="i in quantLinhas" :key="i">
+            <div class="row flex flex-center">
+                <div class="col-2 col-md-2 col-lg-2 q-px-lg q-mx-lg">
+                    <q-select v-model="listaPeriodos[i].dia" :options="diasSemana" label="Dia" />
+                </div>
+                <div class="col-1 col-md-1 col-lg-1 q-mx-lg">
+                    <InputTime @changeTime="listaPeriodos[i].horaInicio = $event"/>
+                </div>
+                <div class="col-1 col-md-1 col-lg-1 q-mx-lg">
+                    <InputTime @changeTime="listaPeriodos[i].horaFim = $event"/>
+                </div>
+            </div>
+        </div>
+        <div class="row flex flex-center">
+            <q-btn class="col-6 col-md-2 col-lg-6 q-px-lg q-mx-lg" color="green-9" icon-right="add_circle" label="Adicionar" @click="addLinha"/>
+            <q-btn class="col-6 col-md-2 col-lg-6 q-px-lg q-mx-lg" color="red-9" icon-right="remove_circle" label="Remover" @click="removeLinha"/>
+        </div>
+        <div class="row flex flex-center q-pt-lg q-mt-lg">
+            <q-btn label="Continuar" class="btn-continuar q-mb-sm col-5" @click="enviar"  />
+        </div>
     </q-page>
 </template>
 <style lang="scss">
@@ -43,20 +33,48 @@
 <script>
 import { defineComponent } from "vue";
 import { DiaSemanaController } from '../services/controllers/DiaSemanaController'
+import InputTime  from 'src/components/Inputs/InputTime.vue'
+
 export default defineComponent({
   name: "TempoDisponivel",
+  components: { InputTime },
   data: () => {
       return {
         diasSemana: [],
-        model: "",
-        horaInicio: "00:00",
-        horaFim: "00:00"
+        quantLinhas: 1,
+        listaPeriodos: {
+            1: {
+                dia: "",
+                horaInicio: "",
+                horaFim: "",
+            }
+        }
       }
   },
   beforeMount(){
     this.buscarPerguntas()
   },
   methods: {
+      addLinha () {
+        this.quantLinhas++
+        this.listaPeriodos[this.quantLinhas] = {
+                dia: "",
+                horaInicio: "",
+                horaFim: "",
+            }
+      },
+      removeLinha () {
+        if(this.quantLinhas > 1) {
+            delete this.listaPeriodos[this.quantLinhas]
+            this.quantLinhas--
+        } else {
+            this.$q.notify({
+                type: 'warning',
+                message: "Você precisa adicionar pelo menos um período."
+            })
+        }
+        
+      },
       async buscarPerguntas(){
         const diasSemana = await DiaSemanaController.BuscarDiasSemana()
         console.log("diasSemana", diasSemana)
@@ -70,6 +88,9 @@ export default defineComponent({
         } else {
             this.diasSemana = diasSemana
         }
+      },
+      enviar(){
+        console.log("listaperiodos: ", this.listaPeriodos)
       }
     }
 });
