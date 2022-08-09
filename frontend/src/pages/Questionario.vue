@@ -168,7 +168,7 @@ export default defineComponent({
       },
       montaEnvio () {
         let resposta = {
-                usuario: 2
+                usuario: this.$store.getters['user/getIdUser']
             }
         this.perguntasObrigatorias.forEach(e => {
             resposta[e.campoAnamneseCorrespondente] = this.respostas[e.idPerguntaAnamnese]
