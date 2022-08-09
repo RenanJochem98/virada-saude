@@ -6,6 +6,7 @@
 # from rest_framework.exceptions import ValidationError
 # from rest_framework.generics import get_object_or_404
 # from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 # from rest_framework.response import Response
 from rest_framework import  viewsets #mixins,
 
@@ -17,7 +18,9 @@ from TempoDisponivel.models import TempoDisponivel, DiaSemana
 class TempoDisponivelViewSet(viewsets.ModelViewSet):
     queryset = TempoDisponivel.objects.all()
     serializer_class = TempoDisponivelSerializer
+    permission_classes = [IsAuthenticated]
 
 class DiaSemanaViewSet(viewsets.ModelViewSet):
     queryset = DiaSemana.objects.all()
     serializer_class = DiaSemanaSerializer
+    permission_classes = [IsAuthenticated]
