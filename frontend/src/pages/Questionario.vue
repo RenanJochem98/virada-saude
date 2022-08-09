@@ -202,12 +202,13 @@ export default defineComponent({
                     type: 'positive',
                     message: "Anamnese criada com sucesso!"
                 })
+                this.$router.push({ name: 'TempoDisponivel' })
             }
              
         } else {
              this.$q.notify({
                     type: 'negative',
-                    message: "Formulario invalido"
+                    message: "Formulario inválido"
                 })
         }
         // temErro = this.questions.length !== Object.values(this.respostas).filter(i =>  i !== null && i !== undefined && i !== '').length
