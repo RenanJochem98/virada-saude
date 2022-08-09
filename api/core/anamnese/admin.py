@@ -28,6 +28,7 @@ class AnamneseAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     'pratica_corrida',
+                    'usuario',
                     'atividade_fisica',
                     'dieta',
                     )
