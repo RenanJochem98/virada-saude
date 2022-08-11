@@ -9,12 +9,11 @@ class TempoDisponivelAdmin(admin.ModelAdmin):
     list_display=('id_tempo_disponivel',
                   'id_dia_semana',
                   'id_usuario',
-                  'hora_inicio',
-                  'hora_fim',
+                  'periodo_disponivel',
                   'data_criacao',
                   'data_modificacao',
                 )
-    list_editable=('id_dia_semana','id_usuario','hora_inicio','hora_fim',)
+    list_editable=('id_dia_semana','id_usuario', 'periodo_disponivel')
     list_filter = ("id_usuario", "id_dia_semana")
 
 @admin.register(DiaSemana)

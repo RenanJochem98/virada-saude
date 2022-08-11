@@ -11,7 +11,7 @@ class TempoDisponivelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TempoDisponivel
-        fields = ["id_tempo_disponivel", "id_dia_semana", "id_usuario", "hora_inicio", "hora_fim"]
+        fields = ["id_tempo_disponivel", "id_dia_semana", "id_usuario", "periodo_disponivel"]
         read_only_fields = ["id_tempo_disponivel", "data_criacao", "data_modificacao"]
         list_serializer_class = TempoDisponivelListSerializer
 
