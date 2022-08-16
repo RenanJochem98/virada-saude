@@ -20,8 +20,40 @@
                 <q-separator :key="'sep' + atividade.id" />
             </div>
             <div class="row flex flex-center q-py-lg">
-                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" :to="{ name: 'Treino' }" />
+                <!-- <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" @click="comecar" /> -->
+                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" @click="sliders = true" />
             </div>
+
+            <q-dialog v-model="sliders">
+                <q-card style="width: 300px" class="q-px-sm q-pb-md">
+                    <q-card-section>
+                        <div class="text-h6">Informações Pré-Treino</div>
+                    </q-card-section>
+
+                    <q-item-label header>Tempo</q-item-label>
+                    <q-item dense>
+                        <q-item-section avatar>
+                            <q-icon name="schedule" />
+                        </q-item-section>
+                        <q-item-section>
+                            <q-slider color="teal" v-model="tempo" :step="0" />
+                        </q-item-section>
+                    </q-item>
+
+                    <q-item-label header>Clima</q-item-label>
+                    <q-item dense>
+                        <q-item-section avatar>
+                            <q-icon name="sunny" />
+                        </q-item-section>
+                        <q-item-section>
+                           <q-select v-model="clima" :options="options" label="Standard" />
+                        </q-item-section>
+                    </q-item>
+                <q-card-actions align="center">
+                    <q-btn label="Enviar" color="positive" v-close-popup />
+                </q-card-actions>
+                </q-card>
+            </q-dialog>
         </div>
     </q-page>
 </template>
@@ -34,6 +66,7 @@
 
 <script>
 import { defineComponent } from "vue";
+import { Dialog } from 'quasar'
 
 const treino = {
     dataReferencia: '2022-03-28',
@@ -59,8 +92,39 @@ export default defineComponent({
   name: "ProximoTreino",
   data: () => {
       return {
-        treino
+        treino,
+        sliders: false,
+        tempo: 1,
+        options: ['Ensolarado', 'Nublado', 'Chuvoso'],
+        clima: 'Ensolarado'
       }
+  },
+  methods: {
+    comecar () {
+        Dialog.create({ 
+        title: 'Opções de treino',
+        message: 'Choose an option:',
+        options: {
+          type: 'radio',
+          model: 'opt1',
+          // inline: true
+          items: [
+            { label: 'Option 1', value: 'opt1', color: 'secondary' },
+            { label: 'Option 2', value: 'opt2' },
+            { label: 'Option 3', value: 'opt3' }
+          ]
+        },
+        cancel: {
+          push: true,
+          color: 'negative'
+        },
+        ok: {
+          push: true,
+          color: 'positive'
+        },
+        persistent: true
+      })
+    }
   }
 });
 </script>
