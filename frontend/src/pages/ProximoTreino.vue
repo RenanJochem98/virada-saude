@@ -36,22 +36,49 @@
                             <q-icon name="schedule" />
                         </q-item-section>
                         <q-item-section>
-                            <q-slider color="teal" v-model="tempo" :step="0" />
+                            <!-- <div class="row q-gutter-md"> -->
+                                <!-- <q-btn
+                                    round
+                                    class="col-xs-2 col-sm-2 flex flex-start"
+                                    icon="remove"
+                                    color="default" 
+                                    size="xs"
+                                    @click="tempo--"/> 
+                                     class="col-xs-4 col-sm-4 flex flex-center"-->
+                                <q-slider
+                                    color="default"
+                                   
+                                    v-model="tempo"
+                                    :step="5"
+                                    :min="20"
+                                    :max="90"
+                                    label
+                                    :label-value="tempo + ' minutos'"
+                                />
+                                <!-- <q-btn
+                                    round
+                                    class="col-xs-2 col-sm-2 flex flex-end"
+                                    icon="add"
+                                    color="default"
+                                    size="xs"
+                                    @click="tempo++" /> -->
+                            <!-- </div> -->
+                            
                         </q-item-section>
                     </q-item>
 
-                    <q-item-label header>Clima</q-item-label>
-                    <q-item dense>
+                    <!-- <q-item-label header>Clima</q-item-label> -->
+                    <q-item dense class="q-pt-lg">
                         <q-item-section avatar>
                             <q-icon name="sunny" />
                         </q-item-section>
                         <q-item-section>
-                           <q-select v-model="clima" :options="options" label="Standard" />
+                           <q-select v-model="clima" :options="options" label="Clima" />
                         </q-item-section>
                     </q-item>
-                <q-card-actions align="center">
-                    <q-btn label="Enviar" color="positive" v-close-popup />
-                </q-card-actions>
+                    <q-card-actions class="q-pt-lg" align="center">
+                        <q-btn label="Começar" color="positive" v-close-popup :to="{ name: 'Treino' }" />
+                    </q-card-actions>
                 </q-card>
             </q-dialog>
         </div>
@@ -61,6 +88,16 @@
     .btn-continuar {
         background: $default;
         color: white
+    }
+
+    .text-default {
+        color: $default !important;
+    }
+    .bg-default {
+        background: $default !important;
+    }
+    .heigth {
+        height: 2px !important;
     }
 </style>
 
@@ -94,7 +131,7 @@ export default defineComponent({
       return {
         treino,
         sliders: false,
-        tempo: 1,
+        tempo: 20,
         options: ['Ensolarado', 'Nublado', 'Chuvoso'],
         clima: 'Ensolarado'
       }
