@@ -12,6 +12,17 @@ class UserSerializer extends GenericSerializer {
         }
     }
 
+    static DeserializeUser(params) {
+        return {
+            idUser: params.id,
+            firstName: params.first_name,
+            lastName: params.last_name,
+            email: params.email,
+            password: params.password,
+            empresa: params.idEmpresa
+        }
+    }
+    
     static SerializeLogin(pEmail, senha) {
         return {
             email: pEmail,
