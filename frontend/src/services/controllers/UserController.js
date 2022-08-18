@@ -9,6 +9,17 @@ class UserController extends GenericController {
         return GenericController.Post('/users/', user)
     }
 
+    static BuscarUsuario (idUser) {
+        UserSerializer.SerializeUser(params)
+
+        const user =  GenericController.Get('/users/'+idUser+"/", true)
+        if(user.status) {
+            return user
+        } else {
+            return UserSerializer.DeserializeUser(user)
+        }
+    }
+
     static async Login (email, senha) {
         const loginParams = UserSerializer.SerializeLogin(email, senha) 
         const result = await GenericController.Post('/token/', loginParams)
