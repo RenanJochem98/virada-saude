@@ -39,10 +39,18 @@ class GenericController {
                 await api.post(baseUrl, data)
             return result.data
         }catch(err){
-            return {
-                status: err.response.status,
-                mensagem: err.response.data.detail
+            if(err.response){
+                return {
+                    status: err.response.status,
+                    mensagem: err.response.data.detail
+                }
+            } else {
+                return {
+                    status: 404,
+                    mensagem: "Não foi possível estabelecer conexão para realizar operação."
+                }
             }
+            
         }
     }
 }
