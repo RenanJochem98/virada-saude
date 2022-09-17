@@ -11,7 +11,7 @@
             >
             <template #day="{ scope: { timestamp } }">
                 <template
-                    v-for="event in eventsMap[timestamp.date]"
+                    v-for="event in this.mapped[timestamp.date]"
                     :key="event.id"
                     >
                     <div :class="badgeClasses(event, 'day')"
@@ -50,78 +50,69 @@ export default {
   data: () => {
     return {
         selectedDate: "",
-        events: []
+        mapped: {}
+        // events: []
     };
   },
+  watch: {
+    events:{
+      handler(newValue, oldValue) {
+        console.log("Watch chamado")
+        this.eventsMap = this.eventsMap()
+        this.$forceUpdate()
+      },
+    }
+  },
   beforeMount () {
-    this.montaEventosTeste()
+    this.eventsMap()
+    
   },
   props: {
-    eventos: {
+    events: {
       default:[]
     }
   },
-  computed: {
-    eventsMap () {
-      const map = {}
-      if (this.events.length > 0) {
-        this.events.forEach(event => {
-          (map[ event.date ] = (map[ event.date ] || [])).push(event)
-          if (event.days !== undefined) {
-            let timestamp = parseTimestamp(event.date)
-            let days = event.days
-            // add a new event for each day
-            // skip 1st one which would have been done above
-            do {
-              timestamp = addToDate(timestamp, { day: 1 })
-              if (!map[ timestamp.date ]) {
-                map[ timestamp.date ] = []
-              }
-              map[ timestamp.date ].push(event)
-              // already accounted for 1st day
-            } while (--days > 1)
-          }
-        })
-      }
-      //console.log(map)
-      return map
-    }
-  },
   methods: {
-      montaEventosTeste () {
-        let dataBase = new Date()
-        dataBase.setMilliseconds(0)
-        dataBase.setSeconds(0)
-        dataBase.setMinutes(0)
-        dataBase.setHours(0)
+      // montaEventosTeste () {
+      //   let dataBase = new Date()
+      //   dataBase.setMilliseconds(0)
+      //   dataBase.setSeconds(0)
+      //   dataBase.setMinutes(0)
+      //   dataBase.setHours(0)
 
-        for(let i = 1; i < 33; i+=2){
+      //   for(let i = 1; i < 33; i+=2){
           
-          let date = getCurrentDay(i)
-          dataBase.setFullYear(parseInt(date.substring(0,4), 10))
-          dataBase.setMonth(parseInt(date.substring(5,7), 10) - 1)
-          dataBase.setDate(parseInt(date.substring(8,10), 10))
+      //     let date = getCurrentDay(i)
+      //     dataBase.setFullYear(parseInt(date.substring(0,4), 10))
+      //     dataBase.setMonth(parseInt(date.substring(5,7), 10) - 1)
+      //     dataBase.setDate(parseInt(date.substring(8,10), 10))
           
           
-          this.events.push({
-                id: i,
-                title: 'Treino: '+i,
-                details: 'Dia de treino',
-                date: date,
-                time: i % 24 + ':00',
-                duration: 60,
-                bgcolor: dataBase < CURRENT_DAY ? "red" : 
-                    dataBase.toDateString() == CURRENT_DAY.toDateString() ? "green" : "blue"
-            })
-        }
-      },
-       badgeClasses (event, type) {
+      //     this.events.push({
+      //         id: i,
+      //         title: 'Treino: '+i,
+      //         details: 'Dia de treino',
+      //         date: date,
+      //         time: i % 24 + ':00',
+      //         duration: 60,
+      //         bgcolor: dataBase < CURRENT_DAY ? "red" : 
+      //             dataBase.toDateString() == CURRENT_DAY.toDateString() ? "green" : "blue"
+      //     })
+      //   }
+      // },
+    badgeClasses (event, type) {
       return {
         [ `text-white bg-${ event.bgcolor }` ]: true,
         'rounded-border': true
       }
     },
-
+    definirCorBadge() {
+      this.events.forEach(element => {
+        element.bgcolor = element.date < CURRENT_DAY ? "red" : 
+          element.date.toDateString() == CURRENT_DAY.toDateString() ? "green" : "blue"
+      })
+      console.log("definirCor Depois", this.events)
+    },
     badgeStyles (day, event) {
       const s = {}
       // s.left = day.weekday === 0 ? 0 : (day.weekday * this.parsedCellWidth) + '%'
@@ -130,7 +121,7 @@ export default {
       // s.width = (event.days * this.parsedCellWidth) + '%'
       return s
     },
-
+    //#region Calendar events
     onToday () {
       this.$refs.calendar.moveToToday()
     },
@@ -160,6 +151,33 @@ export default {
     },
     onClickHeadWorkweek (data) {
       console.log('onClickHeadWorkweek', data)
+    },
+    //#endregion
+    eventsMap () {
+      this.definirCorBadge()
+      console.log("Computed", this.events)
+      const map = {}
+      if (this.events.length > 0) {
+        this.events.forEach(event => {
+          (map[ event.date ] = (map[ event.date ] || [])).push(event)
+          if (event.days !== undefined) {
+            let timestamp = parseTimestamp(event.date)
+            let days = event.days
+            // add a new event for each day
+            // skip 1st one which would have been done above
+            do {
+              timestamp = addToDate(timestamp, { day: 1 })
+              if (!map[ timestamp.date ]) {
+                map[ timestamp.date ] = []
+              }
+              map[ timestamp.date ].push(event)
+              // already accounted for 1st day
+            } while (--days > 1)
+          }
+        })
+      }
+      //console.log(map)
+      this.mapped = map
     }
   }
 }

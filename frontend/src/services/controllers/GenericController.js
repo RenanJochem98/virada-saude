@@ -5,6 +5,7 @@ import store from '../../store'
 
 class GenericController {
 
+
     constructor() {
         throw new Error('Generic Controller não pode ser instanciada.')
     }
@@ -14,6 +15,16 @@ class GenericController {
     }
 
     static async Get(baseUrl, needHeaders) {
+        this.Get(baseUrl, needHeaders, {})
+    }
+
+    static async Get(baseUrl, needHeaders, params) {
+        if(params){
+            let queryParams =Object.entries(params).map(([key, value]) => `${key}=${value}`).
+            join('&')
+
+            baseUrl = baseUrl + '?' +queryParams
+        }
         try {
             const result = needHeaders ? 
                     await api.get(baseUrl, this.mountHeaders()) : 
@@ -26,7 +37,7 @@ class GenericController {
                     mensagem: err.response.data.detail
                 }
             } else {
-                console.log("Erro get generic: ", err)
+                console.error("Erro get generic: ", err)
             }
             
         }
