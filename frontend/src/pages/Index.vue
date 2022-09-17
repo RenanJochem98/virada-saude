@@ -67,9 +67,11 @@ export default defineComponent({
         if(!hasEmailError && !hasPasswordError){
             const result = await UserController.Login(this.email, this.password)
             if(!result.status) {
-                const decoded = jwt_decode(result.accessToken);
+                
                 await this.$store.dispatch('login/ActionSetAccessToken', result.accessToken)
                 await this.$store.dispatch('login/ActionSetRefreshToken', result.refreshToken)
+                
+                const decoded = jwt_decode(result.accessToken);
                 await this.$store.dispatch('user/ActionSetIdUser', decoded.user_id)
                 //await this.$store.dispatch('login/ActionSetIdUser', result.decoded.user_id)
                 this.$q.notify({
