@@ -1,0 +1,4 @@
+Para recriar uma tabela que foi apagada via SGBD:
+
+python manage.py migrate --fake app_name zero 
+python manage.py migrate app_name

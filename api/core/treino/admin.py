@@ -6,8 +6,15 @@ from .models import Treino
 class TreinoAdmin(admin.ModelAdmin):
     ordering = ("id_treino",)
     list_display=('id_treino',
-                  'intensidade',
-                  'tipo_treino',
-                  'usuario'
+                  # 'exercicio',
+                  'data_execucao_prevista',
+                  'data_execucao',
+                  'usuario',
+                  'created',
+                  'modified'
                 )
-    list_editable=('intensidade', 'tipo_treino', 'usuario')
+    list_editable=('usuario', 'data_execucao_prevista', 'data_execucao')
+
+    fieldsets = [
+            (None, {'fields': ['data_execucao_prevista', 'data_execucao', 'usuario']}),
+        ]
