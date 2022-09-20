@@ -44,7 +44,7 @@ class Exercicio(models.Model):
 
     intensidade = models.CharField("Intensidade",db_column="intensidade", max_length=150, blank=False, null=False,choices=(("leve","Leve"), ("medio", "Médio"), ("pesado", "Pesado")))
 
-    tipo_treino = models.CharField("Tipo de treino", db_column="tipo", max_length=150, blank=False, null=False, choices=(("caminhada","Caminhada"), ("joging", "Joging"), ("corrida", "Corrida")))
+    tipo_treino = models.CharField("Tipo de treino", db_column="tipo_treino", max_length=150, blank=False, null=False, choices=(("caminhada","Caminhada"), ("joging", "Joging"), ("corrida", "Corrida")))
 
     porcentagem_treino = models.IntegerField("Porcentagem do treino completo",db_column="porcentagem_treino",  null=True)
 
