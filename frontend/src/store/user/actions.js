@@ -1,7 +1,7 @@
 import * as storage from '../storage'
 
 export const ActionSetIdUser = ({ commit }, payload) => {
-  storage.setLocalAccessToken(payload)
+  storage.setLocalIdUser(payload)
   commit('SetIdUser', payload)
 }
 
