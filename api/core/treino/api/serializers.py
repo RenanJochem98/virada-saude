@@ -9,8 +9,7 @@ class ExercicioSerializer(serializers.ModelSerializer):
         fields = ['id_exercicio',
                   'intensidade',
                   'tipo_treino',
-                  'porcentagem_treino',
-                  'treino']
+                  'porcentagem_treino']
 
 class TreinoSerializer(serializers.ModelSerializer):
     exercicio = ExercicioSerializer(many=True, read_only=True)

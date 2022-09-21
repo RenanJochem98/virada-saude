@@ -6,8 +6,8 @@ class Treino(models.Model):
 
     id_treino = models.AutoField(db_column="id_treino", primary_key=True)
     
-    data_execucao_prevista = models.DateTimeField(db_column="data_execucao_prevista", default=timezone.now ,verbose_name="Data da execução prevista")
-    data_execucao = models.DateTimeField(db_column="data_execucao", default=timezone.now, verbose_name="Data da execução")
+    data_execucao_prevista = models.DateField(db_column="data_execucao_prevista", default=timezone.now ,verbose_name="Data da execução prevista")
+    data_execucao = models.DateField(db_column="data_execucao", default=timezone.now, verbose_name="Data da execução")
     created = models.DateTimeField(db_column="created", auto_now=True, verbose_name="Criado")
     modified = models.DateTimeField(db_column="modified", default=timezone.now, verbose_name="Última modificação")
     

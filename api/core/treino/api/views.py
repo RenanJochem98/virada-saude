@@ -8,7 +8,7 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # from rest_framework.response import Response
 from rest_framework import  viewsets #mixins,
-
+from datetime import datetime
 from treino.api.serializers import (
     TreinoSerializer, ExercicioSerializer
 )
@@ -25,8 +25,16 @@ class TreinoViewSet(viewsets.ModelViewSet):
         by filtering against a `username` query parameter in the URL.
         """
         user = self.request.query_params.get('id_usuario')
-        if user is not None:
-            queryset = Treino.objects.filter(id_usuario=user)
+        data_exec = self.request.query_params.get('data_exec')
+        
+        if user is not None and data_exec is not None:
+            date_object = datetime.strptime(data_exec, '%Y-%m-%d').date()
+            queryset = Treino.objects.filter(usuario=user, data_execucao_prevista =date_object)
+        elif user is not None :
+            queryset = Treino.objects.filter(usuario=user)
+        elif data_exec is not None:
+            date_object = datetime.strptime(data_exec, '%Y-%m-%d').date()
+            queryset = Treino.objects.filter(data_execucao_prevista=data_exec)
         else:
             queryset = Treino.objects.all()
         return queryset
