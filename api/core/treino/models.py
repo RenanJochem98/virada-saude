@@ -53,7 +53,8 @@ class Exercicio(models.Model):
         on_delete=models.DO_NOTHING,
         blank=True,
         null=True,
-        db_column="treino",
+        db_column="id_treino",
+        related_name="exercicio",
         verbose_name="Treino"
     )
 

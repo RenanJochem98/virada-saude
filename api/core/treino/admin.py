@@ -10,7 +10,6 @@ class ExercicioAdminInline(admin.TabularInline):
 class TreinoAdmin(admin.ModelAdmin):
     ordering = ("id_treino",)
     list_display=('id_treino',
-                  # 'exercicio',
                   'data_execucao_prevista',
                   'data_execucao',
                   'usuario',
