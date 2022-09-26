@@ -11,3 +11,7 @@ export const setLocalRefreshToken = (refreshToken) => localStorage.setItem('refr
 export const getLocalIdUser = () => localStorage.getItem('idUser')
 export const removeLocalIdUser = () => localStorage.removeItem('idUser')
 export const setLocalIdUser = (idUser) => localStorage.setItem('idUser', idUser)
+
+export const getLocalPreTreino = () => localStorage.getItem('preTreino')
+export const removeLocalPreTreino = () => localStorage.removeItem('preTreino')
+export const setLocalPreTreino = (preTreino) => localStorage.setItem('preTreino', preTreino)

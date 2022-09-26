@@ -2,6 +2,7 @@ import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
 import login from './login'
 import user from './user'
+import pretreino from './pretreino'
 // import example from './module-example'
 
 /*
@@ -16,7 +17,8 @@ import user from './user'
 export default createStore({
   modules: {
     login,
-    user
+    user,
+    pretreino
   },
 
   // enable strict mode (adds overhead!)
