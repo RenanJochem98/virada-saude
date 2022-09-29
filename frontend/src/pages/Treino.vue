@@ -5,6 +5,11 @@
                 "../../public/sounds/beep.mp3" 
                 type="audio/mpeg">
         </audio>
+        <audio id="chatAudioTwo" >
+            <source src=
+                "../../public/sounds/beepTwo.mp3" 
+                type="audio/mpeg">
+        </audio>
    
         <div class="text-center text-h4 text-weight-bold q-ma-lg text-uppercase">Treino</div>
         <div class="flex flex-center text-h4">
@@ -28,21 +33,22 @@
                 <div class="col-3 flex-center text-center">Tempo (em minutos)</div>
                 <div class="col-4 flex-center text-center">Intensidade</div>
             </div>
-            <div v-for="(atividade, index) in treino.atividades" :key="atividade.id">
+            <div v-for="(exercicio, index) in treino.exercicios" :key="exercicio.idExercicio">
                 <div class="row flex q-py-lg" :class="index%2 == 0 ? '' : 'bg-grey-3'">
-                    <div class="col-1 flex-start text-center">{{ atividade.id }}</div>
-                    <div class="col-4 flex-center text-center">{{ atividade.nome}}</div>
+                    <div class="col-1 flex-start text-center">{{ index +1 }}</div>
+                    <div class="col-4 flex-center text-center text-capitalize">{{ exercicio.tipoTreino}}</div>
                     <div class="col-3 flex-center text-center">
-                        <span>
-                            <span v-if="atividade.tempoEmMinutos < 10">0</span>{{atividade.tempoEmMinutos}}:
+                        {{tempoTotal * (exercicio.porcentagemTreino/100)}} ({{exercicio.porcentagemTreino}}%)
+                        <!-- <span>
+                            <span v-if="exercicio.porcentagemTreino < 10">0</span>{{exercicio.porcentagemTreino}}:
                         </span>
                         <span>
                             <span v-if="atividadeAtualSecond < 10">0</span>{{atividadeAtualSecond}}
-                        </span>
+                        </span> -->
                     </div>
-                    <div class="col-4 flex-center text-center text-uppercase">{{atividade.intensidade}}</div>
+                    <div class="col-4 flex-center text-center text-uppercase">{{exercicio.intensidade}}</div>
                 </div>
-                <q-separator :key="'sep' + atividade.id" />
+                <q-separator :key="'sep' + exercicio.idExercicio" />
             </div>
         </div>
     </q-page>
@@ -56,32 +62,14 @@
 
 <script>
 import { defineComponent } from "vue";
+import { TreinoController } from "src/services/controllers/TreinoController";
 
-const treino = {
-    dataReferencia: '2022-03-28',
-    tempoTotalEmMinutos: 60,
-    atividades: [
-        {
-            id: 1,
-            nome: 'Caminhada',
-            descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
-            tempoEmMinutos: 10,
-            intensidade: 'leve'
-        },
-        {
-            id: 2,
-            nome: 'Corrida',
-            descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
-            tempoEmMinutos: 10,
-            intensidade: 'pesado'
-        }
-    ]
-}
 export default defineComponent({
   name: "Treino",
   data: () => {
       return {
-        treino,
+        treino:{},
+        tempoTotal: 30,
         hour: 0,
         minute: 0,
         second: 0,
@@ -90,7 +78,25 @@ export default defineComponent({
         playDisabled: false
       }
   },
+  beforeMount(){
+    this.BuscarTreino()
+  },
   methods: {
+        async BuscarTreino(){
+            const idUsuario = this.$store.getters['user/getIdUser']
+            const result = await TreinoController.BuscarTreino(idUsuario, '2022-09-21')
+            console.log(result)
+            if(result.status) {
+                if(result.status == 401) {
+                    this.$q.notify({
+                        type: 'negative',
+                        message: result.mensagem
+                    })
+                }
+            } else {
+                this.treino = result
+            }
+        },
       pause() {
         this.playDisabled = false
         clearInterval(this.cron)
@@ -105,10 +111,14 @@ export default defineComponent({
       timer() {
         this.playDisabled = true
         const audio = document.getElementById("chatAudio")
+        const audioTwo = document.getElementById("chatAudioTwo")
         this.cron = setInterval(() => {
             this.second += 1
             if(this.second % 10 == 0) {
                 audio.play()
+            }
+            if(this.second % 15 == 0) {
+                audioTwo.play()
             }
             if(this.second >= 60) {
                 this.second = 0

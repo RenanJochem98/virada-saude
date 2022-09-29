@@ -7,17 +7,17 @@
             <div class="row flex q-py-md text-uppercase text-weight-bold bg-grey-6">
                 <div class="col-1 flex-start text-center">ID</div>
                 <div class="col-4 flex-center text-center">Nome</div>
-                <div class="col-3 flex-center text-center">Tempo (em minutos)</div>
-                <div class="col-4 flex-center text-center">Intensidade</div>
+                <div class="col-3 flex-center text-center">Intensidade</div>
+                <div class="col-4 flex-center text-center">Porcentagem do treino</div>
             </div>
-            <div v-for="(atividade, index) in treino.atividades" :key="atividade.id">
+            <div v-for="(exercicio, index) in treino.exercicios" :key="exercicio.idExercicio">
                 <div class="row flex q-py-lg" :class="index%2 == 0 ? '' : 'bg-grey-3'">
-                    <div class="col-1 flex-start text-center">{{ atividade.id }}</div>
-                    <div class="col-4 flex-center text-center">{{ atividade.nome}}</div>
-                    <div class="col-3 flex-center text-center">{{atividade.tempoEmMinutos}} minutos</div>
-                    <div class="col-4 flex-center text-center text-uppercase">{{atividade.intensidade }}</div>
+                    <div class="col-1 flex-start text-center">{{ exercicio.idExercicio }}</div>
+                    <div class="col-4 flex-center text-center text-capitalize">{{ exercicio.tipoTreino}}</div>
+                    <div class="col-4 flex-center text-center text-uppercase">{{exercicio.intensidade }}</div>
+                    <div class="col-3 flex-center text-center">{{exercicio.porcentagemTreino}}%</div>
                 </div>
-                <q-separator :key="'sep' + atividade.id" />
+                <q-separator :key="'sep' + exercicio.idExercicio" />
             </div>
             <div class="row flex flex-center q-py-lg">
                 <!-- <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" @click="comecar" /> -->
@@ -104,39 +104,57 @@
 <script>
 import { defineComponent } from "vue";
 import { Dialog } from 'quasar'
-
-const treino = {
-    dataReferencia: '2022-03-28',
-    tempoTotalEmMinutos: 60,
-    atividades: [
-        {
-            id: 1,
-            nome: 'Caminhada',
-            descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
-            tempoEmMinutos: 10,
-            intensidade: 'leve'
-        },
-        {
-            id: 2,
-            nome: 'Corrida',
-            descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
-            tempoEmMinutos: 10,
-            intensidade: 'pesado'
-        }
-    ]
-}
+import { TreinoController } from "src/services/controllers/TreinoController";
+// const treino = {
+//     dataReferencia: '2022-03-28',
+//     tempoTotalEmMinutos: 60,
+//     atividades: [
+//         {
+//             id: 1,
+//             nome: 'Caminhada',
+//             descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
+//             tempoEmMinutos: 10,
+//             intensidade: 'leve'
+//         },
+//         {
+//             id: 2,
+//             nome: 'Corrida',
+//             descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
+//             tempoEmMinutos: 10,
+//             intensidade: 'pesado'
+//         }
+//     ]
+// }
 export default defineComponent({
   name: "ProximoTreino",
   data: () => {
       return {
-        treino,
+        treino: {},
         sliders: false,
         tempo: 20,
         options: ['Ensolarado', 'Nublado', 'Chuvoso'],
         clima: 'Ensolarado'
       }
   },
+  beforeMount(){
+    this.BuscarTreino()
+  },
   methods: {
+    async BuscarTreino(){
+        const idUsuario = this.$store.getters['user/getIdUser']
+        const result = await TreinoController.BuscarTreino(idUsuario, '2022-09-28')
+        console.log(result)
+        if(result.status) {
+            if(result.status == 401) {
+                this.$q.notify({
+                    type: 'negative',
+                    message: result.mensagem
+                })
+            }
+        } else {
+            this.treino = result
+        }
+    },
     comecar () {
         Dialog.create({ 
         title: 'Opções de treino',
