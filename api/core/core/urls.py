@@ -30,5 +30,6 @@ urlpatterns = [
     path("", include("empresa.urls")),
     path("", include("anamnese.urls")),
     path("", include("TempoDisponivel.urls")),
-    path("", include("treino.urls"))
+    path("", include("treino.urls")),
+    path("", include("feedback.urls"))
 ]

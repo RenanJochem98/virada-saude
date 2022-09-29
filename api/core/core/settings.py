@@ -53,6 +53,7 @@ PROJECT_APPS = [
     'anamnese',
     'TempoDisponivel',
     'treino',
+    'feedback'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + PROJECT_APPS
