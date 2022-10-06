@@ -20,7 +20,7 @@ class PeguntaFeedbackSerializer(serializers.ModelSerializer):
     opcoes = OpcaoRespostaFeedbackSerializer(many=True, read_only=True)
     depende_de = OpcaoRespostaFeedbackSerializer(many=False, read_only=False)
     class Meta:
-        model = PerguntaFeedback
+        model = PerguntaFeedback 
         fields = ["id_pergunta_feedback",
                   "texto_pergunta",
                   "depende_de",

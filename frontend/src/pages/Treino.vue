@@ -51,6 +51,68 @@
                 <q-separator :key="'sep' + exercicio.idExercicio" />
             </div>
         </div>
+        <q-dialog v-model="feedbackDialog">
+            <q-card style="width: 300px" class="q-px-sm q-pb-md">
+                    <q-card-section>
+                        <div class="text-h6">Feedback</div>
+                    </q-card-section>
+                    <!-- <div v-for="perguntaFeedback in perguntasFeedback" :key="perguntaFeedback.idPerguntaFeedback"> -->
+                            <!-- {{perguntaFeedback}} -->
+                        <div class="row flex flex-center q-mt-lg q-pt-lg">
+                            <div v-for="(perguntaFeedback, i) in perguntasFeedback" :key="i" :class="perguntaFeedback.dependeDe !== null ? 'hidden' : '' + 'row flex-center col-12 questao q-py-lg'" :id="questionRefPrefix + perguntaFeedback.idPerguntaFeedback">
+                                <div class="text-center text-weight-medium">{{i + 1}} - {{perguntaFeedback.texto}}</div>
+                                <div v-if="clicouEmEnviar" class="row col-12 flex flex-center text-negative text-center text-caption q-mt-xs q-mb-sm">
+                                    Campo obrigatório
+                                </div> 
+                                
+                                <div class="q-mt-sm col-12">
+                                    <q-option-group
+                                        :ref="questionRefPrefix + perguntaFeedback.idPerguntaFeedback"
+                                        v-model="respostas[perguntaFeedback.idPerguntaFeedback]"
+                                        class="flex justify-center items-center"
+                                        :options="perguntaFeedback.opcoesResposta" 
+                                        @update:model-value="alterarRespostas(perguntaFeedback.idPerguntaFeedback, $event)"
+                                    />
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                    <!-- <q-item-label header>Tempo</q-item-label>
+                    <q-item dense>
+                        <q-item-section avatar>
+                            <q-icon name="schedule" />
+                        </q-item-section>
+                        <q-item-section>
+                                
+                                <q-slider
+                                    color="default"
+                                   
+                                    v-model="tempo"
+                                    :step="5"
+                                    :min="20"
+                                    :max="90"
+                                    label
+                                    :label-value="tempo + ' minutos'"
+                                />
+                            
+                        </q-item-section>
+                    </q-item> -->
+
+                    <!-- <q-item-label header>Clima</q-item-label> -->
+                    <!-- <q-item dense class="q-pt-lg">
+                        <q-item-section avatar>
+                            <q-icon name="sunny" />
+                        </q-item-section>
+                        <q-item-section>
+                           <q-select v-model="clima" :options="options" label="Clima" />
+                        </q-item-section>
+                    </q-item> -->
+                    <q-card-actions class="q-pt-lg" align="center">
+                        <q-btn label="Enviar" color="positive" v-close-popup />
+                    </q-card-actions>
+                </q-card>
+        </q-dialog>
     </q-page>
 </template>
 <style lang="scss">
@@ -63,11 +125,16 @@
 <script>
 import { defineComponent } from "vue";
 import { TreinoController } from "src/services/controllers/TreinoController";
+import { PerguntasFeedbackController } from "src/services/controllers/PerguntasFeedbackController";
 
 export default defineComponent({
   name: "Treino",
   data: () => {
       return {
+        perguntasFeedback: {},
+        respostas: {},
+        perguntasObrigatorias: [],
+        perguntasNaoObrigatorias: [],
         treino:{},
         tempoTotal: 30,
         hour: 0,
@@ -75,14 +142,41 @@ export default defineComponent({
         second: 0,
         atividadeAtualSecond: 0,
         cron: null,
-        playDisabled: false
+        playDisabled: false,
+        feedbackDialog: false,
+        questionRefPrefix: "feedbackRef",
+        clicouEmEnviar: false
       }
   },
   beforeMount(){
     this.BuscarTreino()
+    this.BuscarPerguntasFeedback()
   },
   methods: {
-        async BuscarTreino(){
+        async BuscarPerguntasFeedback(){
+            const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
+            console.log(result)
+            if(result.status) {
+                if(result.status == 401) {
+                    this.$q.notify({
+                        type: 'negative',
+                        message: result.mensagem
+                    })
+                }
+            } else {
+                this.perguntasFeedback = result
+
+                this.perguntasFeedback.forEach(p => {
+                    if(p.dependeDe) {
+                        this.perguntasNaoObrigatorias.push(p)
+                    } else {
+                        this.perguntasObrigatorias.push(p)
+                    }
+                })
+                console.log(this.perguntasFeedback)
+            }
+        },
+        async BuscarTreino() {
             const idUsuario = this.$store.getters['user/getIdUser']
             const result = await TreinoController.BuscarTreino(idUsuario, '2022-09-21')
             console.log(result)
@@ -97,6 +191,52 @@ export default defineComponent({
                 this.treino = result
             }
         },
+        alterarRespostas (idQuestao, idResposta) {
+            
+            this.respostas[idQuestao] == idResposta
+            let dependentesRespostas = this.perguntasFeedback.filter(p => {
+                return p.dependeDe && p.dependeDe.idOpcaoRespostaFeedback == idResposta
+            })
+
+
+            dependentesRespostas.forEach(d => {
+                document.getElementById(this.questionRefPrefix + d.idPerguntaFeedback).classList.remove('hidden')
+                this.perguntasObrigatorias.push(d)
+                this.perguntasNaoObrigatorias = this.perguntasNaoObrigatorias.filter(p => {
+                        return p.idPerguntaFeedback !== d.idPerguntaFeedback
+                    })
+            })
+
+            //Esconde questoes dependentes que ja foram exibidas, mas com tiveram respostas alteradas
+            let dependentesPerguntas = this.perguntasFeedback.filter(p => {
+                return p.dependeDe && p.dependeDe.idPerguntaFeedback == idQuestao
+            })
+            dependentesPerguntas.forEach(d => {
+                if(this.respostas[idQuestao] && d.dependeDe.idOpcaoRespostaFeedback != this.respostas[idQuestao]) {
+                    this.perguntasNaoObrigatorias.push(d)
+                    this.removePerguntaNaoObrigatoria(d)
+                    this.perguntasObrigatorias = this.perguntasObrigatorias.filter(p => {
+                        return p.idPerguntaFeedback !== d.idPerguntaFeedback
+                    })
+                }
+            })
+        },
+        removePerguntaNaoObrigatoria(pergunta) {
+            document.getElementById(this.questionRefPrefix + pergunta.idPerguntaFeedback).classList.add('hidden')
+            delete this.respostas[pergunta.idPerguntaFeedback] // se pergunta for escondida, resposta nao deve ser enviada
+            
+            if(pergunta.dependeDe !== null) {
+                let dependentes = this.perguntasFeedback.filter(d => {
+                    return d.dependeDe && d.dependeDe.idPerguntaFeedback == pergunta.idPerguntaFeedback
+                })
+                dependentes.forEach(p => {
+                    this.removePerguntaNaoObrigatoria(p)
+                    this.perguntasObrigatorias = this.perguntasObrigatorias.filter(d => {
+                        return p.idPerguntaFeedback !== d.idPerguntaFeedback
+                    })
+                })
+            }
+        },
       pause() {
         this.playDisabled = false
         clearInterval(this.cron)
@@ -106,7 +246,8 @@ export default defineComponent({
         this.cron = null
         this.hour = 0
         this.minute = 0
-        this.second = 0
+        this.second = 0,
+        this.feedbackDialog = true
       },
       timer() {
         this.playDisabled = true

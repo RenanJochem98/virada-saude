@@ -105,26 +105,7 @@
 import { defineComponent } from "vue";
 import { Dialog } from 'quasar'
 import { TreinoController } from "src/services/controllers/TreinoController";
-// const treino = {
-//     dataReferencia: '2022-03-28',
-//     tempoTotalEmMinutos: 60,
-//     atividades: [
-//         {
-//             id: 1,
-//             nome: 'Caminhada',
-//             descricao: 'A caminhada é um movimento onde o ser humando se desloca mantendo sempre um pé no chão.',
-//             tempoEmMinutos: 10,
-//             intensidade: 'leve'
-//         },
-//         {
-//             id: 2,
-//             nome: 'Corrida',
-//             descricao: 'A corrida é um movimento onde o ser humando se desloca de maneira acelerada.',
-//             tempoEmMinutos: 10,
-//             intensidade: 'pesado'
-//         }
-//     ]
-// }
+
 export default defineComponent({
   name: "ProximoTreino",
   data: () => {
@@ -179,7 +160,11 @@ export default defineComponent({
         },
         persistent: true
       })
+    },
+    gravarInformacaoDeTreinoEIrParaProximaPagina(){
+        
     }
+
   }
 });
 </script>
