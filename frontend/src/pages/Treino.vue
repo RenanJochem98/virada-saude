@@ -109,7 +109,7 @@
                         </q-item-section>
                     </q-item> -->
                     <q-card-actions class="q-pt-lg" align="center">
-                        <q-btn label="Enviar" color="positive" v-close-popup />
+                        <q-btn label="Enviar" color="positive" v-close-popup @click="enviarResposta"/>
                     </q-card-actions>
                 </q-card>
         </q-dialog>
@@ -126,6 +126,7 @@
 import { defineComponent } from "vue";
 import { TreinoController } from "src/services/controllers/TreinoController";
 import { PerguntasFeedbackController } from "src/services/controllers/PerguntasFeedbackController";
+import { FeedbackController } from "src/services/controllers/FeedbackController";
 
 export default defineComponent({
   name: "Treino",
@@ -192,7 +193,7 @@ export default defineComponent({
             }
         },
         alterarRespostas (idQuestao, idResposta) {
-            
+
             this.respostas[idQuestao] == idResposta
             let dependentesRespostas = this.perguntasFeedback.filter(p => {
                 return p.dependeDe && p.dependeDe.idOpcaoRespostaFeedback == idResposta
@@ -275,6 +276,41 @@ export default defineComponent({
       },
       playCurrentActivity () {
           
+      },
+      montaEnvio () {
+
+        let resposta = {
+                usuario: this.$store.getters['user/getIdUser'],
+                clima: "Ensolarado",
+                treino: this.treino.idTreino,
+                resultado_feedback: []
+            }
+        // console.log(this.respostas)
+        this.perguntasObrigatorias.forEach(e => {
+            // console.log(e)
+            let item = {}
+            item["id_pergunta_feedback"] = e.idPerguntaFeedback
+            item["id_opcao_resposta_feedback"] =this.respostas[e.idPerguntaFeedback]
+            resposta.resultado_feedback.push(item)
+        })
+
+        return resposta
+      },
+      enviarResposta(){
+        // console.log(this.montaEnvio())
+        const result = FeedbackController.CriarFeedback(this.montaEnvio())
+            if(result.status) {
+                this.$q.notify({
+                    type: 'negative',
+                    message: "Problema ao enviar feedback. Status retorno: " + result.status
+                })
+            } else {
+                this.$q.notify({
+                    type: 'positive',
+                    message: "Feedback enviado com sucesso!"
+                })
+                // this.$router.push({ name: 'TempoDisponivel' })
+            }
       }
   }
 });
