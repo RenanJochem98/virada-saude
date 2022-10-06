@@ -1,7 +1,7 @@
 import * as storage from '../storage'
 
 export const ActionSetPreTreino = ({ commit }, payload) => {
-  storage.setPreTreino(payload)
+  storage.setLocalPreTreino(payload)
   commit('SetPreTreino', payload)
 }
 
