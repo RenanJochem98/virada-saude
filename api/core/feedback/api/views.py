@@ -11,9 +11,9 @@ from rest_framework import  viewsets #mixins,
 
 from feedback.api.serializers import (
     # AnamneseSerializer,
-    PeguntaFeedbackSerializer
+    PeguntaFeedbackSerializer, FeedbackSerializer
 )
-from feedback.models import PerguntaFeedback#, Anamnese 
+from feedback.models import PerguntaFeedback, Feedback 
 
 # class AnamneseViewSet(viewsets.ModelViewSet):
 #     queryset = Anamnese.objects.all()
@@ -23,4 +23,10 @@ from feedback.models import PerguntaFeedback#, Anamnese
 class PerguntaFeedbackViewSet(viewsets.ModelViewSet):
     queryset = PerguntaFeedback.objects.all()
     serializer_class = PeguntaFeedbackSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class FeedbackViewSet(viewsets.ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
     permission_classes = [IsAuthenticated]
