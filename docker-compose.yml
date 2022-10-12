@@ -11,11 +11,6 @@ services:
     environment:
       ENV: "development"
       PORT: 8000
-      # a: "postgres://postgres:postgres@db:5432/app"
-      DATABASE_URL: "mysql://root:mysql_pass@db:5500/saude_database"
-      SECRET_KEY: "x%oithm2a!efp)xp=n=za4z7e6kstxo@g(=9(*qun6r9a3j1&n"
-      DEBUG: "True"
-      ALLOWED_HOSTS: "*,"
     depends_on:
       - db
 
@@ -29,9 +24,4 @@ services:
     volumes:
       - ./docker/db/mysqldata:/var/lib/mysql
       - ./api/mysqld:/var/run/mysqld
-    environment:
-      MYSQL_DATABASE: saude_database
-      MYSQL_USER: root,
-      MYSQL_PASSWORD: root,
-      MYSQL_ROOT_PASSWORD: mysql_root_pass
 

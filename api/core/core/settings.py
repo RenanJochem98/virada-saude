@@ -13,6 +13,14 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+from os.path import dirname, join, exists
+import environ
+
+env = environ.Env()
+env_file = join(dirname(__file__), ".env")
+if exists(env_file):
+    environ.Env.read_env(str(env_file))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,10 +29,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0e%y5h53)x3vhf5%o%83@%8fiu-@cg-e%8^8*xz+9nr8xa8=#!'
+SECRET_KEY = env.str("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -109,11 +118,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'saude_database',
-        'USER': 'root',
-        'PASSWORD': 'mysql_root_pass',
-        'HOST': 'localhost',
-        'PORT': '5500',
+        'NAME': env.str("DATABASE_NAME"),
+        'USER': env.str("DATABASE_USER"),
+        'PASSWORD': env.str("DATABASE_PASSWORD"),
+        'HOST': env.str("DATABASE_HOST"),
+        'PORT': env.str("DATABASE_PORT"),
     }
 }
 
