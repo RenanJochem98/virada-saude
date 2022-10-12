@@ -1,8 +1,11 @@
 from rest_framework import serializers
 
 from feedback.models import PerguntaFeedback, OpcaoRespostaFeedback, Feedback, ResultadoFeedback
+from treino.models import Treino
 from users.api.serializers import UserSerializer
 from treino.api.serializers import TreinoSerializer
+
+from datetime import datetime
 
 class OpcaoRespostaFeedbackSerializer(serializers.ModelSerializer):
 
@@ -60,10 +63,13 @@ class FeedbackSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         resultado_feedback = validated_data.pop("resultado_feedback")
+        # treino = validated_data.pop("treino")
 
         # Salva o resultado principal
         feedback = Feedback.objects.create(**validated_data)
-
+        feedback.treino.data_execucao =  datetime.today().strftime('%Y-%m-%d')
+        feedback.treino.save()
+        feedback.save()
         # Salva as respostas de cada questão
         ResultadoFeedback.objects.bulk_create(
             [
@@ -71,6 +77,8 @@ class FeedbackSerializer(serializers.ModelSerializer):
                 for resultado in resultado_feedback
             ]
         )
-
+        
+        # feedback.treino.save()
+        # Treino.objects.get(id_treino=treino.id_treino).update(data_execuvao=validated_data.pop("data_realizacao"))
         # Retorna o resultado principal
         return feedback
