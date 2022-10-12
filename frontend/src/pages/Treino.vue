@@ -179,7 +179,7 @@ export default defineComponent({
         },
         async BuscarTreino() {
             const idUsuario = this.$store.getters['user/getIdUser']
-            const result = await TreinoController.BuscarTreino(idUsuario, '2022-09-21')
+            const result = await TreinoController.BuscarProximoTreino(idUsuario)
             console.log(result)
             if(result.status) {
                 if(result.status == 401) {
@@ -297,7 +297,6 @@ export default defineComponent({
         return resposta
       },
       enviarResposta(){
-        // console.log(this.montaEnvio())
         const result = FeedbackController.CriarFeedback(this.montaEnvio())
             if(result.status) {
                 this.$q.notify({
@@ -309,7 +308,7 @@ export default defineComponent({
                     type: 'positive',
                     message: "Feedback enviado com sucesso!"
                 })
-                // this.$router.push({ name: 'TempoDisponivel' })
+                // this.$router.push({ name: 'Home' })
             }
       }
   }

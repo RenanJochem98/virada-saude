@@ -77,7 +77,7 @@
                         </q-item-section>
                     </q-item>
                     <q-card-actions class="q-pt-lg" align="center">
-                        <q-btn label="Começar" color="positive" v-close-popup :to="{ name: 'Treino' }" />
+                        <q-btn label="Começar" color="positive" v-close-popup @click="gravarInformacaoDeTreinoEIrParaProximaPagina" />
                     </q-card-actions>
                 </q-card>
             </q-dialog>
@@ -123,8 +123,8 @@ export default defineComponent({
   methods: {
     async BuscarTreino(){
         const idUsuario = this.$store.getters['user/getIdUser']
-        const result = await TreinoController.BuscarTreino(idUsuario, '2022-09-28')
-        console.log(result)
+        const result = await TreinoController.BuscarProximoTreino(idUsuario)
+
         if(result.status) {
             if(result.status == 401) {
                 this.$q.notify({
@@ -162,7 +162,7 @@ export default defineComponent({
       })
     },
     gravarInformacaoDeTreinoEIrParaProximaPagina(){
-        
+        this.$router.push({ name: 'Treino' })
     }
 
   }
