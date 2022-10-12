@@ -40,7 +40,8 @@
 <script>
 import { defineComponent } from "vue";
 // import MonthCalendar from 'components/MonthCalendar.vue'
-import { TempoDisponivelController } from '../services/controllers/TempoDisponivelController'
+// import { TempoDisponivelController } from '../services/controllers/TempoDisponivelController'
+import { TreinoController } from '../services/controllers/TreinoController'
 import {QCalendarMonth, parseDate, parseTimestamp, addToDate} from '@quasar/quasar-ui-qcalendar';
 const CURRENT_DAY = new Date();
 
@@ -74,41 +75,68 @@ export default defineComponent({
   methods: {
     async BuscarTreinos() {
       const idUsuario = this.$store.getters['user/getIdUser']
-      const tempos = await TempoDisponivelController.BuscarTempoDisponivel({id_usuario: idUsuario})
-      if(tempos.status) {
-        // if(perguntas.status == 401) {
+      // const tempos = await TempoDisponivelController.BuscarTempoDisponivel({id_usuario: idUsuario})
+      const proximoTreino = await TreinoController.BuscarProximoTreino(idUsuario)
+     
+      if(proximoTreino.status) {
             this.$q.notify({
                 type: 'negative',
-                message: perguntas.mensagem
+                message: proximoTreino.mensagem
             })
-        // }
       }
       else {
-        let resultado = []
-        tempos.forEach(element => {
-          resultado.push({
-              id: element.idTempoDisponivel,
-              title: 'Treino: '+element.idTempoDisponivel,
-              details: 'Dia de treino',
-              date: new Date(),
-              time: element.idTempoDisponivel % 24 + ':00',
-              duration: element.periodoDisponivel
+        const [year,month, day] = proximoTreino.dataExecucaoPrevista.split('-')
+        const dataPrevista = new Date(year, month-1, day)
+       
+        let resultado = {
+              id: proximoTreino.idTreino,
+              title: 'Treino: '+proximoTreino.idTreino,
+              details: 'Próximo Treino',
+              date: dataPrevista,
+              time: '06:00',
+              bgcolor: 'green'
+              // duration: proximoTreino.periodoDisponivel
+          }
+        this.events.push(resultado)
+      }
+
+      const treinosExecutados = await TreinoController.BuscarTreinosExecutados(idUsuario)
+
+      if(treinosExecutados.status) {
+            this.$q.notify({
+                type: 'negative',
+                message: treinosExecutados.mensagem
+            })
+      }
+      else {
+        
+        treinosExecutados.forEach(element => {
+          let [year,month, day] = element.dataExecucao.split('-')
+          let dataExecucao = new Date(year, month-1, day)
+          
+          this.events.push({
+              id: element.idTreino,
+              title: 'Treino: '+element.idTreino,
+              details: 'Treino já executado',
+              date: dataExecucao,
+              time: '06:00',
+              bgcolor: 'red'
+              // duration: element.periodoDisponivel
           })
-        })
-        this.events = resultado
-        this.eventosMapeados = this.eventsMap()
+        })        
       }
       
+      this.eventosMapeados = this.eventsMap()
     },
     eventsMap () {
-      this.definirCorBadge()
+      // this.definirCorBadge()
       const map = {}
       let eventKey = ''
       if (this.events.length > 0) {
         this.events.forEach(event => {
           let month = event.date.getMonth()+1;
           let day = event.date.getDate();
-          eventKey = event.date.getFullYear() + '-'+(month < 10 ? '0' : '') + month+'-'+ day;
+          eventKey = event.date.getFullYear() + '-'+(month < 10 ? '0' : '') + month+'-'+ (day < 10 ? '0' : '') + day;
           // console.log(event.date.toString())
           (map[ eventKey ] = (map[ eventKey ] || [])).push(event);
           if (event.days !== undefined) {
@@ -127,7 +155,6 @@ export default defineComponent({
           }
         })
       }
-
       return map
     },
     definirCorBadge() {

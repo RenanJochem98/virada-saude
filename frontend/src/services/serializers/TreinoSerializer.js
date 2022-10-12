@@ -11,6 +11,15 @@ class TreinoSerializer extends GenericSerializer {
             exercicios: (params.exercicio == null || params.exercicio.length == 0) ? null : this.SerializeListaExercicio(params.exercicio)
         }
     }
+    
+    static SerializeListaTreino(lista){
+        let listResult = []
+        lista.forEach(element => {
+            let treinoSerializado = this.SerializeTreino(element)
+            listResult.push(treinoSerializado)
+        })
+        return listResult
+    }
 
     static SerializeExercicio(params) {
         return {

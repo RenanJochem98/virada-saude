@@ -18,6 +18,29 @@ class TreinoController extends GenericController {
         }
         return TreinoSerializer.SerializeTreino(result[0])
     }
+
+    static async BuscarProximoTreino (idUsuario) {
+        const params = {
+            id_usuario: idUsuario
+        }
+        const result = await GenericController.Get("/proximo_treino", true, params)
+        if(result.status) {
+            return result
+        }
+        return TreinoSerializer.SerializeTreino(result[0])
+    }
+
+    static async BuscarTreinosExecutados (idUsuario) {
+        const params = {
+            id_usuario: idUsuario
+        }
+        const result = await GenericController.Get("/treino_executado", true, params)
+        if(result.status) {
+            return result
+        }
+        return TreinoSerializer.SerializeListaTreino(result)
+    }
+    
 }
 
 
