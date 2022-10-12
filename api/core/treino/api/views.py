@@ -52,6 +52,16 @@ class ProximoTreinoViewSet(viewsets.ModelViewSet):
         if userId is None:
             return None
         return Treino.BuscarProximoTreino(userId)
+
+class TreinoExecutadoViewSet(viewsets.ModelViewSet):
+    #queryset = Treino.objects.all()
+    serializer_class = TreinoSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        userId = self.request.query_params.get('id_usuario')
+        if userId is None:
+            return []
+        return Treino.BuscarTreinosExecutados(userId)
     
     
 
