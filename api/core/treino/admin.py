@@ -17,7 +17,7 @@ class TreinoAdmin(admin.ModelAdmin):
                   'modified'
                 )
     list_editable=('usuario', 'data_execucao_prevista', 'data_execucao')
-
+    list_filter = ("usuario", )
     inlines = [ExercicioAdminInline]
 
     fieldsets = [
