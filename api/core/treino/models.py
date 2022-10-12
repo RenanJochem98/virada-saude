@@ -1,13 +1,14 @@
 from pickle import TRUE
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 class Treino(models.Model):
 
     id_treino = models.AutoField(db_column="id_treino", primary_key=True)
     
     data_execucao_prevista = models.DateField(db_column="data_execucao_prevista", default=timezone.now ,verbose_name="Data da execução prevista")
-    data_execucao = models.DateField(db_column="data_execucao", default=timezone.now, verbose_name="Data da execução")
+    data_execucao = models.DateField(db_column="data_execucao", default=timezone.now, verbose_name="Data da execução", null=True)
     created = models.DateTimeField(db_column="created", auto_now=True, verbose_name="Criado")
     modified = models.DateTimeField(db_column="modified", default=timezone.now, verbose_name="Última modificação")
     
@@ -29,7 +30,10 @@ class Treino(models.Model):
     #     db_column="exercicio",
     #     related_name="id_exercicio"
     # )
-
+    @staticmethod
+    def BuscarProximoTreino(userId):
+        data_atual = datetime.today()
+        return Treino.objects.filter(usuario__id = userId, data_execucao_prevista__gte = data_atual).order_by('data_execucao_prevista')
 
     def __str__(self):
         return f"Treino {self.id_treino}: {self.usuario.first_name} {self.usuario.last_name} {self.data_execucao if not None else self.data_execucao_prevista}"
