@@ -3,3 +3,5 @@ Para recriar uma tabela que foi apagada via SGBD:
 python manage.py makemigrations app_name
 python manage.py migrate --fake app_name zero 
 python manage.py migrate app_name
+
+pip uninstall -y -r requirements/removed.txt
