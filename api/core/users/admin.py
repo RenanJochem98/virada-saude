@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from anamnese.models import Anamnese
 
-from users.models import RegistrationForm
+#from users.models import RegistrationForm
 
 User = get_user_model()
 

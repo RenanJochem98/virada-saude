@@ -2,7 +2,7 @@
 # import constants
 
 # from tkinter import CASCADE
-from hashids import Hashids
+# from hashids import Hashids
 
 from django.utils import timezone
 from django.contrib import admin
@@ -12,21 +12,21 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 # from anamnese.models import Anamnese
 
-hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
+# hashids = Hashids(min_length=3, alphabet="abcdefghijklmnopqrstuvwxyz0123456789")
 
 
-class RegistrationForm(models.Model):
-    name = models.CharField(max_length=255)
+# class RegistrationForm(models.Model):
+#     name = models.CharField(max_length=255)
 
-    def __str__(self) -> str:
-        return self.name
+#     def __str__(self) -> str:
+#         return self.name
 
-    def encode(self) -> str:
-        return hashids.encode(self.id)
+#     def encode(self) -> str:
+#         return hashids.encode(self.id)
 
-    @classmethod
-    def decode(cls, string: str) -> "RegistrationForm":
-        return cls.objects.filter(id=hashids.decode(string)[0]).first()
+#     @classmethod
+#     def decode(cls, string: str) -> "RegistrationForm":
+#         return cls.objects.filter(id=hashids.decode(string)[0]).first()
 
 
 class UserManager(BaseUserManager):
