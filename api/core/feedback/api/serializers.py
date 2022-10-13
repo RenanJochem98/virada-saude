@@ -52,7 +52,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
     resultado_feedback = ResultadoFeedbackSerializer(many=True, required=False) 
     class Meta:
         model = Feedback
-        fields = ['id_feedback', 'data_realizacao', 'clima', 'usuario', 'treino', 'resultado_feedback']
+        fields = ['id_feedback', 'data_realizacao', 'clima', 'usuario', 'treino', 'tempoPreSetadoUsuario', 'tempoTreinoRealizado', 'resultado_feedback']
 
     def to_representation(self, instance):
         representation = super(FeedbackSerializer, self).to_representation(instance)

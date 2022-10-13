@@ -6,6 +6,8 @@ class Feedback(models.Model):
     id_feedback = models.AutoField(primary_key=True)
     data_realizacao = models.DateTimeField("Data Realização", default=timezone.now)
     clima = models.CharField("Clima", max_length=150, blank=True, null=True)
+    tempoPreSetadoUsuario = models.IntegerField("Tempo Pre Setado (em minutos)", default=0)
+    tempoTreinoRealizado = models.IntegerField("Tempo Realizado (em minutos)", default=0)
     usuario = models.ForeignKey(
         "users.User",
         on_delete=models.RESTRICT,

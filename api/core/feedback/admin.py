@@ -15,9 +15,9 @@ class FeedbackAdmin(admin.ModelAdmin):
     # def BuscarDependeDe(self, obj):
     #     return obj.depende_de.BuscarPergunta().texto_pergunta +": " + obj.depende_de.texto if obj.depende_de != None else 'Sem dependência'
     search_fields  = ('treino',)
-    list_display=('id_feedback', 'data_realizacao', 'clima', 'usuario', 'treino') 
+    list_display=('id_feedback', 'data_realizacao', 'clima', 'tempoPreSetadoUsuario', 'tempoTreinoRealizado','usuario', 'treino') 
     # list_editable=('texto_pergunta', )
-    # list_filter = ('texto', 'tipo', 'depende_de')
+    list_filter = ('usuario', 'data_realizacao')
     inlines = [ResultadoFeedbackInline]
 
 class OpcaoRespostaFeedbackInline(admin.TabularInline):

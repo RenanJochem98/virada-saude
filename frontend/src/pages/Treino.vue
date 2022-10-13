@@ -186,12 +186,12 @@ export default defineComponent({
             const result = await TreinoController.BuscarProximoTreino(idUsuario)
             console.log(result)
             if(result.status) {
-                if(result.status == 401) {
+                // if(result.status == 401) {
                     this.$q.notify({
                         type: 'negative',
                         message: result.mensagem
                     })
-                }
+                // }
             } else {
                 this.treino = result
             }
@@ -248,10 +248,10 @@ export default defineComponent({
       },
       stop() {
         this.pause()
-        this.cron = null
-        this.hour = 0
-        this.minute = 0
-        this.second = 0,
+        // this.cron = null
+        // this.hour = 0
+        // this.minute = 0
+        // this.second = 0,
         this.feedbackDialog = true
       },
       timer() {
@@ -286,6 +286,8 @@ export default defineComponent({
         let resposta = {
                 usuario: this.$store.getters['user/getIdUser'],
                 clima: this.$store.getters['pretreino/getClimaTreino'],
+                tempoPreSetadoUsuario: this.$store.getters['pretreino/getTempoTreino'],
+                tempoTreinoRealizado: this.minute,
                 treino: this.treino.idTreino,
                 resultado_feedback: []
             }
@@ -300,8 +302,9 @@ export default defineComponent({
 
         return resposta
       },
-      enviarResposta(){
-        const result = FeedbackController.CriarFeedback(this.montaEnvio())
+      async enviarResposta(){
+        const result = await FeedbackController.CriarFeedback(this.montaEnvio())
+        console.log(result)
             if(result.status) {
                 this.$q.notify({
                     type: 'negative',
