@@ -154,79 +154,74 @@ export default defineComponent({
     this.BuscarPerguntasFeedback()
   },
   methods: {
-        setTempoTreino(){
+      setTempoTreino(){
             this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
-        },
-        async BuscarPerguntasFeedback(){
-            const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
-            console.log(result)
-            if(result.status) {
-                if(result.status == 401) {
-                    this.$q.notify({
-                        type: 'negative',
-                        message: result.mensagem
-                    })
-                }
-            } else {
-                this.perguntasFeedback = result
+      },
+      async BuscarPerguntasFeedback(){
+          const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
+          
+          if(result.status) {
+              if(result.status == 401) {
+                this.$q.notify({
+                      type: 'negative',
+                      message: result.mensagem
+                  })
+              }
+          } else {
+              this.perguntasFeedback = result
+              this.perguntasFeedback.forEach(p => {
+                  if(p.dependeDe) {
+                      this.perguntasNaoObrigatorias.push(p)
+                  } else {
+                      this.perguntasObrigatorias.push(p)
+                  }
+              })
+          }
+      },
 
-                this.perguntasFeedback.forEach(p => {
-                    if(p.dependeDe) {
-                        this.perguntasNaoObrigatorias.push(p)
-                    } else {
-                        this.perguntasObrigatorias.push(p)
-                    }
-                })
-                console.log(this.perguntasFeedback)
-            }
-        },
+      async BuscarTreino() {
+          const idUsuario = this.$store.getters['user/getIdUser']
+          const result = await TreinoController.BuscarProximoTreino(idUsuario)
+      
+          if(result.status) {
+              this.$q.notify({
+                  type: 'negative',
+                  message: result.mensagem
+              })
+          } else {
+              this.treino = result
+          }
+      },
+      alterarRespostas (idQuestao, idResposta) {
 
-        async BuscarTreino() {
-            const idUsuario = this.$store.getters['user/getIdUser']
-            const result = await TreinoController.BuscarProximoTreino(idUsuario)
-            console.log(result)
-            if(result.status) {
-                // if(result.status == 401) {
-                    this.$q.notify({
-                        type: 'negative',
-                        message: result.mensagem
-                    })
-                // }
-            } else {
-                this.treino = result
-            }
-        },
-        alterarRespostas (idQuestao, idResposta) {
+          this.respostas[idQuestao] == idResposta
+          let dependentesRespostas = this.perguntasFeedback.filter(p => {
+              return p.dependeDe && p.dependeDe.idOpcaoRespostaFeedback == idResposta
+          })
 
-            this.respostas[idQuestao] == idResposta
-            let dependentesRespostas = this.perguntasFeedback.filter(p => {
-                return p.dependeDe && p.dependeDe.idOpcaoRespostaFeedback == idResposta
-            })
+          dependentesRespostas.forEach(d => {
+              document.getElementById(this.questionRefPrefix + d.idPerguntaFeedback).classList.remove('hidden')
+              this.perguntasObrigatorias.push(d)
+              this.perguntasNaoObrigatorias = this.perguntasNaoObrigatorias.filter(p => {
+                      return p.idPerguntaFeedback !== d.idPerguntaFeedback
+                  })
+          })
 
-
-            dependentesRespostas.forEach(d => {
-                document.getElementById(this.questionRefPrefix + d.idPerguntaFeedback).classList.remove('hidden')
-                this.perguntasObrigatorias.push(d)
-                this.perguntasNaoObrigatorias = this.perguntasNaoObrigatorias.filter(p => {
-                        return p.idPerguntaFeedback !== d.idPerguntaFeedback
-                    })
-            })
-
-            //Esconde questoes dependentes que ja foram exibidas, mas com tiveram respostas alteradas
-            let dependentesPerguntas = this.perguntasFeedback.filter(p => {
-                return p.dependeDe && p.dependeDe.idPerguntaFeedback == idQuestao
-            })
-            dependentesPerguntas.forEach(d => {
-                if(this.respostas[idQuestao] && d.dependeDe.idOpcaoRespostaFeedback != this.respostas[idQuestao]) {
-                    this.perguntasNaoObrigatorias.push(d)
-                    this.removePerguntaNaoObrigatoria(d)
-                    this.perguntasObrigatorias = this.perguntasObrigatorias.filter(p => {
-                        return p.idPerguntaFeedback !== d.idPerguntaFeedback
-                    })
-                }
-            })
-        },
-        removePerguntaNaoObrigatoria(pergunta) {
+          //Esconde questoes dependentes que ja foram exibidas, mas com tiveram respostas alteradas
+          let dependentesPerguntas = this.perguntasFeedback.filter(p => {
+              return p.dependeDe && p.dependeDe.idPerguntaFeedback == idQuestao
+          })
+          dependentesPerguntas.forEach(d => {
+              if(this.respostas[idQuestao] && d.dependeDe.idOpcaoRespostaFeedback != this.respostas[idQuestao]) {
+                  this.perguntasNaoObrigatorias.push(d)
+                  this.removePerguntaNaoObrigatoria(d)
+                  this.perguntasObrigatorias = this.perguntasObrigatorias.filter(p => {
+                      return p.idPerguntaFeedback !== d.idPerguntaFeedback
+                  })
+              }
+          })
+      },
+      removePerguntaNaoObrigatoria(pergunta) {
             document.getElementById(this.questionRefPrefix + pergunta.idPerguntaFeedback).classList.add('hidden')
             delete this.respostas[pergunta.idPerguntaFeedback] // se pergunta for escondida, resposta nao deve ser enviada
             
@@ -241,7 +236,7 @@ export default defineComponent({
                     })
                 })
             }
-        },
+      },
       pause() {
         this.playDisabled = false
         clearInterval(this.cron)
@@ -304,7 +299,7 @@ export default defineComponent({
       },
       async enviarResposta(){
         const result = await FeedbackController.CriarFeedback(this.montaEnvio())
-        console.log(result)
+        
             if(result.status) {
                 this.$q.notify({
                     type: 'negative',
