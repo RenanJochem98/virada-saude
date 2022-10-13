@@ -6,3 +6,17 @@ export const getPreTreino = ({ preTreino }) => {
   }
   return preTreino
 }
+
+export const getTempoTreino = ({ tempoTreino }) => {
+  if (!tempoTreino) {
+    tempoTreino = storage.getLocalTempoTreino()
+  }
+  return tempoTreino
+}
+
+export const getClimaTreino = ({ climaTreino }) => {
+  if (!climaTreino) {
+    climaTreino = storage.getLocalClimaTreino()
+  }
+  return climaTreino
+}

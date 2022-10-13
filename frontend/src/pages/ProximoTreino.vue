@@ -161,7 +161,9 @@ export default defineComponent({
         persistent: true
       })
     },
-    gravarInformacaoDeTreinoEIrParaProximaPagina(){
+    async gravarInformacaoDeTreinoEIrParaProximaPagina(){
+        await this.$store.dispatch('pretreino/ActionSetTempoTreino', this.tempo)
+        await this.$store.dispatch('pretreino/ActionSetClimaTreino', this.clima)
         this.$router.push({ name: 'Treino' })
     }
 

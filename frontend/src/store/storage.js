@@ -15,3 +15,11 @@ export const setLocalIdUser = (idUser) => localStorage.setItem('idUser', idUser)
 export const getLocalPreTreino = () => localStorage.getItem('preTreino')
 export const removeLocalPreTreino = () => localStorage.removeItem('preTreino')
 export const setLocalPreTreino = (preTreino) => localStorage.setItem('preTreino', preTreino)
+
+export const getLocalClimaTreino = () => localStorage.getItem('climaTreino')
+export const removeLocalClimaTreino = () => localStorage.removeItem('climaTreino')
+export const setLocalClimaTreino = (climaTreino) => localStorage.setItem('climaTreino', climaTreino)
+
+export const getLocalTempoTreino = () => localStorage.getItem('tempoTreino')
+export const removeLocalTempoTreino = () => localStorage.removeItem('tempoTreino')
+export const setLocalTempoTreino = (tempoTreino) => localStorage.setItem('tempoTreino', tempoTreino)

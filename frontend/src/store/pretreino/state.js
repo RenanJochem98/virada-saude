@@ -1,5 +1,7 @@
 export default function () {
   return {
-    preTreino: ""
+    preTreino: "",
+    tempoTreino: 30,
+    climaTreino: ""
   };
 }

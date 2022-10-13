@@ -154,6 +154,9 @@ export default defineComponent({
     this.BuscarPerguntasFeedback()
   },
   methods: {
+        setTempoTreino(){
+            this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
+        },
         async BuscarPerguntasFeedback(){
             const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
             console.log(result)
@@ -177,6 +180,7 @@ export default defineComponent({
                 console.log(this.perguntasFeedback)
             }
         },
+
         async BuscarTreino() {
             const idUsuario = this.$store.getters['user/getIdUser']
             const result = await TreinoController.BuscarProximoTreino(idUsuario)
@@ -281,7 +285,7 @@ export default defineComponent({
 
         let resposta = {
                 usuario: this.$store.getters['user/getIdUser'],
-                clima: "Ensolarado",
+                clima: this.$store.getters['pretreino/getClimaTreino'],
                 treino: this.treino.idTreino,
                 resultado_feedback: []
             }
