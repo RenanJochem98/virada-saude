@@ -19,10 +19,10 @@
         </div>
         
         <div class="row flex flex-center q-py-lg">
-            <div class="col-2">
-                <q-btn round icon="stop" class="btn-continuar q-mb-sm q-mx-sm" @click="stop" />
-                <q-btn :disable="playDisabled" round icon="play_arrow" class="btn-continuar q-mb-sm q-mx-sm" @click="timer" />
-                <q-btn round icon="pause" class="btn-continuar q-mb-sm q-mx-sm" @click="pause" />
+            <div class="">
+                <q-btn round icon="stop" class="btn-continuar q-mb-sm q-mx-sm col-xs-2 col-sm-2" @click="stop" />
+                <q-btn :disable="playDisabled" round icon="play_arrow" class="btn-continuar q-mb-sm q-mx-sm col-xs-2 col-sm-2" @click="timer" />
+                <q-btn round icon="pause" class="btn-continuar q-mb-sm q-mx-sm col-xs-2 col-sm-2" @click="pause" />
             </div>
         </div>
         <div class="q-px-lg ">
@@ -60,7 +60,7 @@
                             <!-- {{perguntaFeedback}} -->
                         <div class="row flex flex-center q-mt-lg q-pt-lg">
                             <div v-for="(perguntaFeedback, i) in perguntasFeedback" :key="i" :class="perguntaFeedback.dependeDe !== null ? 'hidden' : '' + 'row flex-center col-12 questao q-py-lg'" :id="questionRefPrefix + perguntaFeedback.idPerguntaFeedback">
-                                <div class="text-center text-weight-medium">{{i + 1}} - {{perguntaFeedback.texto}}</div>
+                                <div class="text-center text-weight-medium">{{perguntaFeedback.texto}}</div>
                                 <div v-if="clicouEmEnviar" class="row col-12 flex flex-center text-negative text-center text-caption q-mt-xs q-mb-sm">
                                     Campo obrigatório
                                 </div> 
@@ -146,7 +146,8 @@ export default defineComponent({
         playDisabled: false,
         feedbackDialog: false,
         questionRefPrefix: "feedbackRef",
-        clicouEmEnviar: false
+        clicouEmEnviar: false,
+        listaExercicios: {}
       }
   },
   beforeMount(){
@@ -154,8 +155,13 @@ export default defineComponent({
     this.BuscarPerguntasFeedback()
   },
   methods: {
+      setListaExercicios(){
+        this.listaExercicios = this.treino.exercicios
+
+        this.treino.exercicios
+      },
       setTempoTreino(){
-            this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
+        this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
       },
       async BuscarPerguntasFeedback(){
           const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
