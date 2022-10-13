@@ -147,7 +147,8 @@ export default defineComponent({
         feedbackDialog: false,
         questionRefPrefix: "feedbackRef",
         clicouEmEnviar: false,
-        listaExercicios: {}
+        listaExercicios: [],
+        minutosDeInicio: []
       }
   },
   beforeMount(){
@@ -156,10 +157,25 @@ export default defineComponent({
   },
   methods: {
       setListaExercicios(){
-        this.listaExercicios = this.treino.exercicios
-
-        this.treino.exercicios
-      },
+        // this.listaExercicios = this.treino.exercicios
+        // console.log(this.treino.exercicios)
+        let tempoTotal = 0
+        this.treino.exercicios.forEach(exercicio => {
+            
+            let tempoExercicio = this.tempoTotal * (exercicio.porcentagemTreino/100)
+            let item = {
+                tipoExercico: exercicio.tipoTreino,
+                intensidade: exercicio.intensidade,
+                tempo: tempoExercicio,
+                minutoInicio: tempoTotal
+            }
+            tempoTotal += tempoExercicio
+            this.minutosDeInicio.push(tempoTotal)
+            this.listaExercicios.push(item)
+        })
+        console.log(this.minutosDeInicio)
+        // console.log(this.listaExercicios)
+    },
       setTempoTreino(){
         this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
       },
@@ -196,6 +212,7 @@ export default defineComponent({
               })
           } else {
               this.treino = result
+              this.setListaExercicios()
           }
       },
       alterarRespostas (idQuestao, idResposta) {
@@ -261,15 +278,18 @@ export default defineComponent({
         const audioTwo = document.getElementById("chatAudioTwo")
         this.cron = setInterval(() => {
             this.second += 1
-            if(this.second % 10 == 0) {
-                audio.play()
-            }
-            if(this.second % 15 == 0) {
-                audioTwo.play()
-            }
+            // if(this.second % 10 == 0) {
+            //     audio.play()
+            // }
+            // if(this.second % 15 == 0) {
+            //     audioTwo.play()
+            // }
             if(this.second >= 60) {
                 this.second = 0
                 this.minute += 1
+                if(this.minutosDeInicio.includes(this.minute)){
+                    audio.play()
+                }
             }
             if(this.minute >= 60) {
                 this.minute = 0
