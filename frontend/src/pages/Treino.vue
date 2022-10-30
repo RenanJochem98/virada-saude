@@ -1,6 +1,6 @@
 <template>
     <q-page>
-         <audio id="chatAudio" >
+         <!-- <audio id="chatAudio" >
             <source src=
                 "../../public/sounds/beep.mp3" 
                 type="audio/mpeg">
@@ -9,8 +9,42 @@
             <source src=
                 "../../public/sounds/beepTwo.mp3" 
                 type="audio/mpeg">
+        </audio> -->
+
+        <audio id="audiocaminhada" >
+            <source src=
+                "../../public/sounds/caminhada.mp3" 
+                type="audio/mpeg">
         </audio>
-   
+
+        <audio id="audioleve" >
+            <source src=
+                "../../public/sounds/leve.mp3" 
+                type="audio/mpeg">
+        </audio>
+        
+        <audio id="audiojoging" >
+            <source src=
+                "../../public/sounds/joging.mp3" 
+                type="audio/mpeg">
+        </audio>
+
+        <audio id="audiomedio" >
+            <source src=
+                "../../public/sounds/medio.mp3" 
+                type="audio/mpeg">
+        </audio>
+
+        <audio id="audiocorrida" >
+            <source src=
+                "../../public/sounds/corrida.mp3" 
+                type="audio/mpeg">
+        </audio>
+        <audio id="audiopesado" >
+            <source src=
+                "../../public/sounds/pesado.mp3" 
+                type="audio/mpeg">
+        </audio>
         <div class="text-center text-h4 text-weight-bold q-ma-lg text-uppercase">Treino</div>
         <div class="flex flex-center text-h4">
             <div><span v-if="hour < 10">0</span>{{ hour }}:</div>
@@ -29,16 +63,17 @@
             <!-- <div class="text-center text-h6 text-weight-medium q-mt-xl text-uppercase">Atividades</div> -->
             <div class="row flex q-py-md text-uppercase text-weight-bold bg-grey-6">
                 <div class="col-1 flex-start text-center">Ordem</div>
-                <div class="col-4 flex-center text-center">Nome</div>
+                <div class="col-3 flex-center text-center">Nome</div>
                 <div class="col-3 flex-center text-center">Tempo (em minutos)</div>
-                <div class="col-4 flex-center text-center">Intensidade</div>
+                <div class="col-3 flex-center text-center">Tempo início</div>
+                <div class="col-2 flex-center text-center">Intensidade</div>
             </div>
-            <div v-for="(exercicio, index) in treino.exercicios" :key="exercicio.idExercicio">
+            <div v-for="(exercicio, index) in listaExercicios" :key="exercicio.idExercicio">
                 <div class="row flex q-py-lg" :class="index%2 == 0 ? '' : 'bg-grey-3'">
                     <div class="col-1 flex-start text-center">{{ index +1 }}</div>
-                    <div class="col-4 flex-center text-center text-capitalize">{{ exercicio.tipoTreino}}</div>
+                    <div class="col-3 flex-center text-center text-capitalize">{{ exercicio.tipoExercicio}}</div>
                     <div class="col-3 flex-center text-center">
-                        {{tempoTotal * (exercicio.porcentagemTreino/100)}} ({{exercicio.porcentagemTreino}}%)
+                        {{exercicio.tempoMinutos}}:{{exercicio.tempoSegundosExibicao}} ({{exercicio.porcentagemTreino}}%)
                         <!-- <span>
                             <span v-if="exercicio.porcentagemTreino < 10">0</span>{{exercicio.porcentagemTreino}}:
                         </span>
@@ -46,7 +81,8 @@
                             <span v-if="atividadeAtualSecond < 10">0</span>{{atividadeAtualSecond}}
                         </span> -->
                     </div>
-                    <div class="col-4 flex-center text-center text-uppercase">{{exercicio.intensidade}}</div>
+                    <div class="col-3 flex-center text-center text-uppercase">{{exercicio.tempoTotalExibicao}}</div>
+                    <div class="col-2 flex-center text-center text-uppercase">{{exercicio.intensidade}}</div>
                 </div>
                 <q-separator :key="'sep' + exercicio.idExercicio" />
             </div>
@@ -152,6 +188,7 @@ export default defineComponent({
       }
   },
   beforeMount(){
+    this.setTempoTreino()
     this.BuscarTreino()
     this.BuscarPerguntasFeedback()
   },
@@ -160,24 +197,46 @@ export default defineComponent({
         // this.listaExercicios = this.treino.exercicios
         // console.log(this.treino.exercicios)
         let tempoTotal = 0
+        let tempoTotalMinutos = 0
+        let tempoTotalSegundos = 0
+        let tempoTotalSegundosStr = '00'
         this.treino.exercicios.forEach(exercicio => {
             
             let tempoExercicio = this.tempoTotal * (exercicio.porcentagemTreino/100)
+            let tempoMinutos = Math.trunc(tempoExercicio)
+            let tempoSegundos = Math.round(((tempoExercicio - tempoMinutos)*60))
+            let tempoSegundosStr = this.formatarSegundosParaExibicao(tempoSegundos)
+        
+            tempoTotalMinutos = Math.trunc(tempoTotal)
+            tempoTotalSegundos = Math.round(((tempoTotal - tempoTotalMinutos)*60))
+            tempoTotalSegundosStr = this.formatarSegundosParaExibicao(tempoTotalSegundos)
+            this.minutosDeInicio.push(tempoTotalMinutos+':'+tempoTotalSegundosStr)
+
             let item = {
-                tipoExercico: exercicio.tipoTreino,
+                idExercicio: exercicio.idExercicio,
+                porcentagemTreino: exercicio.porcentagemTreino,
+                tipoExercicio: exercicio.tipoTreino,
                 intensidade: exercicio.intensidade,
-                tempo: tempoExercicio,
+                tempoMinutos: tempoMinutos,
+                tempoSegundos:tempoSegundos,
+                tempoSegundosExibicao:  tempoSegundosStr,
+                tempoTotalExibicao: tempoTotal > 0 ? (tempoTotalMinutos+':'+tempoTotalSegundosStr) : '0:00',
                 minutoInicio: tempoTotal
             }
-            tempoTotal += tempoExercicio
-            this.minutosDeInicio.push(tempoTotal)
+            
+            
+            
             this.listaExercicios.push(item)
+            tempoTotal += tempoExercicio
         })
-        console.log(this.minutosDeInicio)
+        // console.log(this.minutosDeInicio)
         // console.log(this.listaExercicios)
     },
       setTempoTreino(){
         this.tempoTotal = this.$store.getters['pretreino/getTempoTreino']
+      },
+      formatarSegundosParaExibicao(segundo){
+        return segundo == 0 ? '00' : segundo < 10 ? ('0' + segundo) : segundo
       },
       async BuscarPerguntasFeedback(){
           const result = await PerguntasFeedbackController.BuscarTodasPerguntasParaSelectField()
@@ -272,30 +331,38 @@ export default defineComponent({
         // this.second = 0,
         this.feedbackDialog = true
       },
-      timer() {
+      async timer() {
         this.playDisabled = true
-        const audio = document.getElementById("chatAudio")
-        const audioTwo = document.getElementById("chatAudioTwo")
         this.cron = setInterval(() => {
-            this.second += 1
-            // if(this.second % 10 == 0) {
-            //     audio.play()
-            // }
-            // if(this.second % 15 == 0) {
-            //     audioTwo.play()
-            // }
-            if(this.second >= 60) {
+            
+            let tempoAtual =this.minute+':'+ this.formatarSegundosParaExibicao(this.second)
+            // console.log(tempoAtual)
+            // console.log(this.minutosDeInicio)
+            if(this.minutosDeInicio.includes(tempoAtual)){
+                let exercicioAtual = this.listaExercicios.filter(el => {
+                    return el.tempoTotalExibicao == tempoAtual
+                })[0]
+                // console.log(exercicioAtual)
+                let audioExercicio = document.getElementById('audio'+exercicioAtual.tipoExercicio.toLowerCase())
+                let audioIntensidade = document.getElementById('audio'+exercicioAtual.intensidade.toLowerCase())
+                if(audioExercicio){
+                    audioExercicio.onended = () => { audioIntensidade.play() }
+                    audioExercicio.play()
+                }
+                exercicioAtual = null
+                audioExercicio = null
+            }
+            tempoAtual = null
+            
+            if(this.second >= 59) {
                 this.second = 0
                 this.minute += 1
-                if(this.minutosDeInicio.includes(this.minute)){
-                    audio.play()
-                }
             }
-            if(this.minute >= 60) {
+            if(this.minute >= 59) {
                 this.minute = 0
                 this.hour += 1
             }
-            
+            this.second += 1
             
         }, 1000)
       },
