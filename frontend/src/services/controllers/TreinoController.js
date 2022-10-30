@@ -24,7 +24,7 @@ class TreinoController extends GenericController {
             id_usuario: idUsuario
         }
         const result = await GenericController.Get("/proximo_treino", true, params)
-        if(result.status) {
+        if(result == null || result.length == 0 || result.status) {
             return result
         }
         return TreinoSerializer.SerializeTreino(result[0])
@@ -34,11 +34,19 @@ class TreinoController extends GenericController {
         const params = {
             id_usuario: idUsuario
         }
-        const result = await GenericController.Get("/treino_executado", true, params)
+        const result = await GenericController.Get("/treino_passado", true, params)
         if(result.status) {
             return result
         }
         return TreinoSerializer.SerializeListaTreino(result)
+    }
+
+    static async CancelarTreino (idTreino) {
+        const result = await GenericController.Update("/treino_cancelado", idTreino, {})
+        if(result.status) {
+            return result
+        }
+        return TreinoSerializer.SerializeTreino(result)
     }
     
 }

@@ -21,7 +21,8 @@
             </div>
             <div class="row flex flex-center q-py-lg">
                 <!-- <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" @click="comecar" /> -->
-                <q-btn label="Começar" class="btn-continuar q-mb-sm col-5" @click="sliders = true" />
+                <q-btn label="Cancelar treino" color="negative" class="q-mb-sm col-3" @click="cancelarTreino" />
+                <q-btn label="Começar" class="btn-continuar q-mb-sm col-3" @click="sliders = true" />
             </div>
 
             <q-dialog v-model="sliders">
@@ -165,7 +166,23 @@ export default defineComponent({
         await this.$store.dispatch('pretreino/ActionSetTempoTreino', this.tempo)
         await this.$store.dispatch('pretreino/ActionSetClimaTreino', this.clima)
         this.$router.push({ name: 'Treino' })
+    },
+
+    async cancelarTreino(){
+        const result = await TreinoController.CancelarTreino(this.treino.idTreino)
+
+        if(result.status) {
+            this.$q.notify({
+                type: 'negative',
+                message: result.mensagem
+            })
+        } else {
+            this.treino = result
+            this.$router.push({ name: 'Home' })
+        }
+        
     }
+
 
   }
 });

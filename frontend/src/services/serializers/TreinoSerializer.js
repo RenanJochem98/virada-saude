@@ -8,6 +8,7 @@ class TreinoSerializer extends GenericSerializer {
             dataExecucaoPrevista: params.data_execucao_prevista,
             dataExecucao: params.data_execucao,
             usuario: params.usuario,
+            cancelado: params.cancelado,
             exercicios: (params.exercicio == null || params.exercicio.length == 0) ? null : this.SerializeListaExercicio(params.exercicio)
         }
     }

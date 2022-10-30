@@ -64,6 +64,28 @@ class GenericController {
             
         }
     }
+
+    static async Update(baseUrl, idUpdatedObject, data) {
+        try {
+            baseUrl = baseUrl.replace(/\/$/, '');
+            baseUrl += "/" + idUpdatedObject + "/"
+            const result = await api.patch(baseUrl, data, this.mountHeaders())
+            return result.data
+        }catch(err){
+            if(err.response){
+                return {
+                    status: err.response.status,
+                    mensagem: err.response.data.detail
+                }
+            } else {
+                return {
+                    status: 404,
+                    mensagem: "Não foi possível estabelecer conexão para realizar operação."
+                }
+            }
+            
+        }
+    }
 }
 
 export {GenericController}

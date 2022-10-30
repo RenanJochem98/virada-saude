@@ -77,7 +77,6 @@ export default defineComponent({
       const idUsuario = this.$store.getters['user/getIdUser']
       // const tempos = await TempoDisponivelController.BuscarTempoDisponivel({id_usuario: idUsuario})
       const proximoTreino = await TreinoController.BuscarProximoTreino(idUsuario)
-      
       if(proximoTreino.status) {
             this.$q.notify({
                 type: 'negative',
@@ -85,19 +84,21 @@ export default defineComponent({
             })
       }
       else {
-        const [year,month, day] = proximoTreino.dataExecucaoPrevista.split('-')
-        const dataPrevista = new Date(year, month-1, day)
-        const hoje = new Date()
-        let resultado = {
-              id: proximoTreino.idTreino,
-              title: 'Treino: '+proximoTreino.idTreino,
-              details: dataPrevista < hoje ? 'Próximo Treino (Atrasado)' :'Próximo Treino',
-              date: dataPrevista,
-              time: '06:00',
-              bgcolor: dataPrevista < hoje ? 'orange' : 'blue'
-              // duration: proximoTreino.periodoDisponivel
-          }
-        this.events.push(resultado)
+        if(proximoTreino != null && proximoTreino.length > 0) {
+          const [year,month, day] = proximoTreino.dataExecucaoPrevista.split('-')
+          const dataPrevista = new Date(year, month-1, day)
+          const hoje = new Date()
+          let resultado = {
+                id: proximoTreino.idTreino,
+                title: 'Treino: '+proximoTreino.idTreino,
+                details: dataPrevista < hoje ? 'Próximo Treino (Atrasado)' :'Próximo Treino',
+                date: dataPrevista,
+                time: '06:00',
+                bgcolor: dataPrevista < hoje ? 'orange' : 'blue'
+                // duration: proximoTreino.periodoDisponivel
+            }
+          this.events.push(resultado)
+        }
       }
 
       const treinosExecutados = await TreinoController.BuscarTreinosExecutados(idUsuario)
@@ -135,9 +136,16 @@ export default defineComponent({
               bgcolor: cor
               // duration: element.periodoDisponivel
           })
-        })        
+        })      
       }
-      
+      if((proximoTreino == null || proximoTreino.length == 0)
+        && (treinosExecutados == null || treinosExecutados.length == 0) )
+      {
+        this.$q.notify({
+                type: 'warning',
+                message: "Nenhum treino encontrado."
+            })
+      }
       this.eventosMapeados = this.eventsMap()
     },
     eventsMap () {
