@@ -14,7 +14,7 @@ from datetime import datetime
 from rest_framework.response import Response
 
 from treino.api.serializers import (
-    TreinoSerializer, ExercicioSerializer
+    TreinoSerializer, ExercicioSerializer, TreinoCanceladoSerializer
 )
 from treino.models import Treino, Exercicio
 
@@ -62,10 +62,12 @@ class TreinoExecutadoViewSet(viewsets.ModelViewSet):
         if userId is None:
             return []
         return Treino.BuscarTreinosExecutados(userId)
-    
-    
 
-          
+class TreinoCanceladoViewSet(viewsets.ModelViewSet):
+    queryset = Treino.objects.all()
+    serializer_class = TreinoCanceladoSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['patch', ]
 
 class ExercicioViewSet(viewsets.ModelViewSet):
     queryset = Exercicio.objects.all()

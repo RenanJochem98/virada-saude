@@ -12,11 +12,12 @@ class TreinoAdmin(admin.ModelAdmin):
     list_display=('id_treino',
                   'data_execucao_prevista',
                   'data_execucao',
+                  'cancelado',
                   'usuario',
                   'created',
                   'modified'
                 )
-    list_editable=('usuario', 'data_execucao_prevista', 'data_execucao')
+    list_editable=('usuario', 'data_execucao_prevista', 'data_execucao', 'cancelado')
     list_filter = ("usuario", )
     inlines = [ExercicioAdminInline]
 

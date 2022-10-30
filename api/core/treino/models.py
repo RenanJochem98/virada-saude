@@ -9,6 +9,7 @@ class Treino(models.Model):
     
     data_execucao_prevista = models.DateField(db_column="data_execucao_prevista", default=timezone.now ,verbose_name="Data da execução prevista")
     data_execucao = models.DateField(db_column="data_execucao", default=timezone.now, verbose_name="Data da execução", null=True, blank=True)
+    cancelado = models.BooleanField(db_column="cancelado", default=False, verbose_name="Cancelado", null=False, blank=True)
     created = models.DateTimeField(db_column="created", auto_now=True, verbose_name="Criado")
     modified = models.DateTimeField(db_column="modified", default=timezone.now, verbose_name="Última modificação")
     
@@ -33,11 +34,23 @@ class Treino(models.Model):
     @staticmethod
     def BuscarProximoTreino(userId):
         data_atual = datetime.today()
-        return Treino.objects.filter(usuario__id = userId, data_execucao_prevista__gte = data_atual, data_execucao__isnull=True).order_by('data_execucao_prevista')
+        # data_execucao_prevista__gte = data_atual, 
+        return Treino.objects.filter(cancelado = False, usuario__id = userId, data_execucao__isnull=True).order_by('data_execucao_prevista')
 
     @staticmethod
     def BuscarTreinosExecutados(userId):
         return Treino.objects.filter(usuario__id = userId, data_execucao__isnull=False).order_by('data_execucao')
+
+        # treinos_cancelados = Treino.objects.filter(usuario__id = userId, cancelado = True).order_by('data_execucao')
+
+        # return treinos_executados.union(treinos_cancelados) 
+
+    @staticmethod
+    def CancelarTreino(treinoId):
+        treino = Treino.objects.get(id_treino = treinoId)
+        treino.cancelado = True
+        treino.save()
+        return treino
 
     def __str__(self):
         return f"Treino {self.id_treino}: {self.usuario.first_name} {self.usuario.last_name} {self.data_execucao if not None else self.data_execucao_prevista}"

@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 
 from treino.models import Treino, Exercicio
 from users.api.serializers import UserSerializer
@@ -18,6 +18,7 @@ class TreinoSerializer(serializers.ModelSerializer):
         fields = ['id_treino',
                   'data_execucao_prevista',
                   'data_execucao',
+                  'cancelado',
                   'usuario',
                   'created',
                   'modified',
@@ -27,6 +28,17 @@ class TreinoSerializer(serializers.ModelSerializer):
             representation = super(TreinoSerializer, self).to_representation(instance)
             representation['usuario'] = UserSerializer(instance.usuario).data
             return representation
+        
+        def create(self, validated_data):
+            id_treino = validated_data.pop("id_treino")
+            return Treino.CancelarTreino(id_treino)
+
+class TreinoCanceladoSerializer(TreinoSerializer):
+    
+    def update(self, instance, validated_data):
+        id_treino = validated_data.get('id_treino', instance.id_treino)
+        return Treino.CancelarTreino(id_treino)
+         
 
 # class OpcaoRespostaAnamneseSerializer(serializers.ModelSerializer):
 
