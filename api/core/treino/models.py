@@ -41,15 +41,18 @@ class Treino(models.Model):
     def BuscarTreinosExecutados(userId):
         return Treino.objects.filter(usuario__id = userId, data_execucao__isnull=False).order_by('data_execucao')
 
-        # treinos_cancelados = Treino.objects.filter(usuario__id = userId, cancelado = True).order_by('data_execucao')
-
-        # return treinos_executados.union(treinos_cancelados) 
+    @staticmethod
+    def BuscarTreinosPassados(userId):
+        treinos_executados = Treino.BuscarTreinosExecutados(userId)
+        treinos_cancelados = Treino.objects.filter(usuario__id = userId, cancelado = True)
+        return treinos_executados.union(treinos_cancelados).order_by('data_execucao_prevista')
 
     @staticmethod
     def CancelarTreino(treinoId):
         treino = Treino.objects.get(id_treino = treinoId)
-        treino.cancelado = True
-        treino.save()
+        if not treino.cancelado:
+            treino.cancelado = True
+            treino.save()
         return treino
 
     def __str__(self):
