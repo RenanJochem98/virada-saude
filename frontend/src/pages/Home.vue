@@ -77,7 +77,7 @@ export default defineComponent({
       const idUsuario = this.$store.getters['user/getIdUser']
       // const tempos = await TempoDisponivelController.BuscarTempoDisponivel({id_usuario: idUsuario})
       const proximoTreino = await TreinoController.BuscarProximoTreino(idUsuario)
-     
+      
       if(proximoTreino.status) {
             this.$q.notify({
                 type: 'negative',
@@ -87,14 +87,14 @@ export default defineComponent({
       else {
         const [year,month, day] = proximoTreino.dataExecucaoPrevista.split('-')
         const dataPrevista = new Date(year, month-1, day)
-       
+        const hoje = new Date()
         let resultado = {
               id: proximoTreino.idTreino,
               title: 'Treino: '+proximoTreino.idTreino,
-              details: 'Próximo Treino',
+              details: dataPrevista < hoje ? 'Próximo Treino (Atrasado)' :'Próximo Treino',
               date: dataPrevista,
               time: '06:00',
-              bgcolor: 'green'
+              bgcolor: dataPrevista < hoje ? 'orange' : 'blue'
               // duration: proximoTreino.periodoDisponivel
           }
         this.events.push(resultado)
@@ -111,16 +111,28 @@ export default defineComponent({
       else {
         
         treinosExecutados.forEach(element => {
-          let [year,month, day] = element.dataExecucao.split('-')
+          let [year,month, day] = [null, null, null]
+          let detelhesTreino = ""
+          let cor = ""
+          if(element.dataExecucao != null){
+            [year,month, day] = element.dataExecucao.split('-')
+            detelhesTreino = "Treino já executado"
+            cor = "green"
+          }else{
+            [year,month, day] = element.dataExecucaoPrevista.split('-')
+            detelhesTreino = "Treino cancelado"
+            cor = "red"
+          }
+          
           let dataExecucao = new Date(year, month-1, day)
           
           this.events.push({
               id: element.idTreino,
               title: 'Treino: '+element.idTreino,
-              details: 'Treino já executado',
+              details: detelhesTreino,
               date: dataExecucao,
               time: '06:00',
-              bgcolor: 'red'
+              bgcolor: cor
               // duration: element.periodoDisponivel
           })
         })        
