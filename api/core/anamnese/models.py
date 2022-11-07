@@ -42,23 +42,115 @@ class Anamnese(models.Model):
         db_column="dieta",
         related_name="dieta"
     )
-    # pressao_arterial = models.CharField("pressao_arterial", max_length=10, null=False)
-    # tem_lesao = models.IntegerField("tem_lesao", null=False)
-    # dores_musculares = models.IntegerField("dores_musculares", null=False)
-    # diabetes = models.IntegerField("diabetes", null=False)
-    # problema_coronariano = models.IntegerField("problema_coronariano", null=False)
-    # competitividade = models.IntegerField("competitividade", null=False)
-    # condicao_fisica = models.IntegerField("condicao_fisica", null=False)
-    # nivel_apitidao = models.IntegerField("nivel_apitidao", null=False)
-    # tempo_disponivel = models.IntegerField("tempo_disponivel", null=False)
-    # tempo_disponivel = models.ForeignKey(
-    #     "anamnese.OpcaoRespostaAnamnese",
-    #     on_delete=models.RESTRICT,
-    #     blank=False,
-    #     null=False,
-    #     db_column="tempo_disponivel",
-    #     related_name="tempo_disponivel"
-    # )
+
+    pratica_exercicio_academia = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="pratica_exercicio_academia",
+        related_name="pratica_exercicio_academia"
+    )
+
+    pressao_arterial = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="pressao_arterial",
+        related_name="pressao_arterial"
+    )
+
+    dor_muscular = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="dor_muscular",
+        related_name="dor_muscular"
+    )
+
+    tem_lesao = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="tem_lesao",
+        related_name="tem_lesao"
+    )
+
+    diabetes = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="diabetes",
+        related_name="diabetes"
+    )
+
+    problema_coronariano = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="problema_coronariano",
+        related_name="problema_coronariano"
+    )
+
+    competitividade = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="competitividade",
+        related_name="competitividade"
+    )
+
+    condicao_fisica_atual = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="condicao_fisica_atual",
+        related_name="condicao_fisica_atual"
+    )
+
+    aptidao_fisica_atual = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="aptidao_fisica_atual",
+        related_name="aptidao_fisica_atual"
+    )
+
+    atividade_preferida = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="atividade_preferida",
+        related_name="atividade_preferida"
+    )
+
+    altura = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="altura",
+        related_name="altura"
+    )
+
+    peso = models.ForeignKey(
+        "anamnese.OpcaoRespostaAnamnese",
+        on_delete=models.RESTRICT,
+        blank=True,
+        null=True,
+        db_column="peso",
+        related_name="peso"
+    )
+
     data_criacao = models.DateTimeField("data_criacao", default=timezone.now)
     data_modificacao = models.DateTimeField("data_modificacao", auto_now=True)
 
