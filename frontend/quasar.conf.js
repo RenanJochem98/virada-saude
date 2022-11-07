@@ -7,6 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 /* eslint-env node */
+require('dotenv').config()
 const ESLintPlugin = require("eslint-webpack-plugin");
 const { configure } = require("quasar/wrappers");
 
@@ -43,10 +44,10 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "hash", // available values: 'hash', 'history'
-      // env: {
-      //   URL_API: 'http://localhost:8000'
-      //   //API: ctx.dev ? 'http://localhost:8000' : process.env.URL_API_ENVIROMENT
-      // },
+      env: {
+        URL_API: process.env.URL_API
+        //API: ctx.dev ? 'http://localhost:8000' : process.env.URL_API_ENVIROMENT
+      },
       // transpile: false,
       // publicPath: '/',
 
