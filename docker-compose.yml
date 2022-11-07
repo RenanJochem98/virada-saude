@@ -1,5 +1,17 @@
 version: "3"
 services:
+  frontend :
+    container_name: "virada_saude_frontend"
+    build: ./frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/home/ViradaSaude
+    #command: "quasar build -m pwa"
+    environment:
+      - CHOKIDAR_USEPOLLING=true #variavel para permitir o hot-reloading
+    depends_on:
+      - api
   api:
     build: ./api
     container_name: "virada_saude_api"

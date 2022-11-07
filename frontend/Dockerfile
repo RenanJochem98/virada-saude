@@ -19,7 +19,7 @@ FROM develop-stage as build-stage
 # ARG URL_API
 RUN npm install
 RUN quasar build -m pwa
-
+#RUN quasar build
 
 # production stage
 FROM nginx:1.17.5-alpine as production-stage

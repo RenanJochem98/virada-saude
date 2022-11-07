@@ -43,7 +43,10 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "hash", // available values: 'hash', 'history'
-
+      // env: {
+      //   URL_API: 'http://localhost:8000'
+      //   //API: ctx.dev ? 'http://localhost:8000' : process.env.URL_API_ENVIROMENT
+      // },
       // transpile: false,
       // publicPath: '/',
 
@@ -132,7 +135,7 @@ module.exports = configure(function (ctx) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: { skipWaiting: true, clientsClaim: true}, // only for GenerateSW
 
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
@@ -149,7 +152,7 @@ module.exports = configure(function (ctx) {
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
-        theme_color: "#027be3",
+        theme_color: "#027be5",
         icons: [
           {
             src: "icons/icon-128x128.png",
