@@ -25,6 +25,5 @@ services:
     environment:
       ENV: "development"
       PORT: 8000
-    depends_on:
 
 
