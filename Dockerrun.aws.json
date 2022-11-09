@@ -26,21 +26,7 @@
             "hostPort": 8000,
             "containerPort": 8000
           }
-        ],
-        "links": ["db"]
-      },
-      {
-        "name": "db",
-        "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/ecr-app-db",
-        "hostname": "db",
-        "essential": true,
-        "portMappings": [ 
-          {
-            "hostPort": 3306,
-            "containerPort": 3306
-          }
-        ],
-        "memory": 512
+        ]
       }
     ]
   }
