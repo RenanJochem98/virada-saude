@@ -1,0 +1,46 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "frontend",
+        "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/ecr-app-frontend",
+        "hostname": "frontend",
+        "essential": true,
+        "memory": 1024,
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "containerPort": 80
+          }
+        ],
+        "links": ["api"]
+      },
+      {
+        "name": "api",
+        "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/ecr-app-api",
+        "hostname": "api",
+        "essential": true,
+        "memory": 512,
+        "portMappings": [
+          {
+            "hostPort": 8000,
+            "containerPort": 8000
+          }
+        ],
+        "links": ["db"]
+      },
+      {
+        "name": "db",
+        "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/ecr-app-db",
+        "hostname": "db",
+        "essential": true,
+        "portMappings": [ 
+          {
+            "hostPort": 3306,
+            "containerPort": 3306
+          }
+        ],
+        "memory": 512
+      }
+    ]
+  }
