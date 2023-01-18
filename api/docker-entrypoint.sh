@@ -22,6 +22,7 @@ if [ "$ENV" = "development" ] ; then
         django-admin startproject core
     fi
 else
+    python core/manage.py makemigrations
     python core/manage.py migrate
     python core/manage.py collectstatic --noinput  # Collect static files
 
@@ -33,9 +34,9 @@ else
 
     # Start Gunicorn processes
     echo Starting Gunicorn
-    exec gunicorn app.wsgi \
+    exec gunicorn core.wsgi \
         --bind 0.0.0.0:$PORT \
-        --chdir /usr/src/app/src \
+        --chdir /usr/src/app/core \
         --workers 3 \
         --timeout 60 \
         --log-level=info \

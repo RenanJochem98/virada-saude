@@ -2,6 +2,7 @@ api/core/core/.env
 
 docker/db/mysqldata/*
 api/mysqld/*
+api/logs/*
 
 api/core/staticfiles
 
