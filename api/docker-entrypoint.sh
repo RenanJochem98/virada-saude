@@ -24,7 +24,7 @@ if [ "$ENV" = "development" ] ; then
 else
     python core/manage.py makemigrations
     python core/manage.py migrate
-    python core/manage.py collectstatic --noinput  # Collect static files
+    python core/manage.py collectstatic --noinput --clear  # Collect static files
 
     # Prepare log files and start outputting logs to stdout
     mkdir -p /srv/logs/

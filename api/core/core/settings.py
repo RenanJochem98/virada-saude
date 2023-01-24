@@ -35,17 +35,11 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv("DEBUG"))
 
-if os.getenv("ENV") == "PROD":
-    ALLOWED_HOSTS = [
-        os.getenv("API_HOST"),
-        os.getenv("API_HOST_AWS")
-    ]
-    
-
-else :
-    ALLOWED_HOSTS = [
-        "http://localhost:8080"
-    ]
+# if os.getenv("ENV") == "PROD":
+ALLOWED_HOSTS = [
+    os.getenv("API_HOST"),
+    os.getenv("API_HOST_AWS")
+]
 
 CORS_ALLOWED_ORIGINS = [
         os.getenv("FRONT_HOST")
@@ -95,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -177,6 +172,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
