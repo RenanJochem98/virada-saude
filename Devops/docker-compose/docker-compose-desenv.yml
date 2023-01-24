@@ -1,0 +1,60 @@
+version: "3"
+services:
+  frontend :
+    container_name: "virada_saude_frontend"
+    image: renanj/viradasaude-front:v1
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/home/ViradaSaude
+    #command: "quasar build -m pwa"
+    environment:
+      #CHOKIDAR_USEPOLLING: "True" #variavel para permitir o hot-reloading
+      URL_API: "http://localhost:8000/api"
+    depends_on:
+      - api
+  api:
+    container_name: "virada_saude_api"
+    image: renanj/viradasaude-api:v1
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/usr/src/app
+      - ./api/mysqld:/var/run/mysqld
+      - ./api/logs:/srv/logs/
+    ports:
+      - 8000:8000
+    environment:
+      ENV: "PROD"
+      PORT: 8000
+      DEBUG: "True"
+      DATABASE_NAME: "virada_saude_db"
+      DATABASE_USER: "root"
+      DATABASE_PASSWORD: "mysql_root_pass"
+      DATABASE_HOST: "localhost"
+      DATABASE_PORT: 5500
+      API_HOST: "localhost:8000"
+      API_HOST_AWS: "localhost:8000"
+      FRONT_HOST: http://localhost:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.31
+    container_name: "virada_saude_db"
+    command: "--default-authentication-plugin=mysql_native_password" #chmod -R 777 mysqld && 
+    # restart: always
+    ports:
+      - 5500:3306 # alterando porta para facilitar conexao
+    environment:
+      MYSQL_DATABASE: "virada_saude_db"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "mysql_root_pass"
+      MYSQL_HOST: "localhost"
+    volumes:
+      - ./docker/db/mysqldata:/var/lib/mysql
+      - ./api/mysqld:/var/run/mysqld

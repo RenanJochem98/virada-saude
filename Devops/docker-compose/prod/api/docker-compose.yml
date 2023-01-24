@@ -1,0 +1,15 @@
+version: "3"
+services:
+  api:
+    container_name: "virada_saude_api"
+    image: renanj/viradasaude-api:v1
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/usr/src/app
+      - ./api/logs:/srv/logs/
+    ports:
+      - 8000:8000
+
+

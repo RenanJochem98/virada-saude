@@ -35,8 +35,21 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv("DEBUG"))
 
-ALLOWED_HOSTS = []
+if os.getenv("ENV") == "PROD":
+    ALLOWED_HOSTS = [
+        os.getenv("API_HOST"),
+        os.getenv("API_HOST_AWS")
+    ]
+    
 
+else :
+    ALLOWED_HOSTS = [
+        "http://localhost:8080"
+    ]
+
+CORS_ALLOWED_ORIGINS = [
+        os.getenv("FRONT_HOST")
+    ] 
 
 # Application definition
 # Aplicacoes que vem por padrao do django
@@ -117,7 +130,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
+        # 'ENGINE': 'mysql.connector.django', 
         'NAME': os.getenv("DATABASE_NAME"),
         'USER': os.getenv("DATABASE_USER"),
         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
@@ -142,10 +156,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080"
 ]
 
 # Internationalization

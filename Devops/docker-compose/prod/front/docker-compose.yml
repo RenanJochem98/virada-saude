@@ -1,0 +1,18 @@
+version: "3"
+services:
+  frontend :
+    container_name: "virada_saude_frontend"
+    image: renanj/viradasaude-front:v1
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/home/ViradaSaude
+    #command: "quasar build -m pwa"
+    environment:
+      #CHOKIDAR_USEPOLLING: "True" #variavel para permitir o hot-reloading
+      URL_API: "http://localhost:8000/api"
+
+
